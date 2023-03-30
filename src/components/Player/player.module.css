@@ -1,0 +1,27 @@
+.player{
+    position: absolute;
+    bottom: 5%;
+    text-align: center;
+}
+
+.score{
+    position: relative;
+    right: -105%;
+    top: -5%;
+    font-size: 1.2rem;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 2px;
+    width: 2.2rem;
+    padding: 0.4rem;
+    aspect-ratio: 1 / 1;
+}
+
+.cards{
+    display: flex;
+    column-gap: 0.4rem;
+}
+
+.player__name{
+    font-size: 1.4rem;
+}

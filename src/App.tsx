@@ -1,11 +1,8 @@
 import './App.css';
+import GameTable from './components/GameTable/GameTable';
 
 function App() {
-  return (
-    <div className='App'>
-      <h1>Hello world</h1>
-    </div>
-  );
+  return <GameTable />;
 }
 
 export default App;
