@@ -14,7 +14,7 @@ export const getCardsScore = (cards: Card[]) => {
     (score, card) => (card.isHidden ? score : score + cardStringValueToNumber(card.value)),
     0
   );
-  if (hasAce && resultScore >= 21) {
+  if (hasAce && resultScore > 21) {
     resultScore -= 10;
   }
 
