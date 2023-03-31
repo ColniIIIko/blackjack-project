@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useCountDown } from '../../hooks/useCountDown';
 import { PlayerChoice } from '../../types/general';
+import Timer from '../Timer/Timer';
 
 import styles from './playerOptionChoice.module.css';
 
@@ -16,7 +16,6 @@ const START_TIME = 15;
 
 function PlayerOptionChoice({ choices, defaultChoice, onChoice }: Props) {
   const [currentChoice, setCurrentChoice] = useState<PlayerChoice>(defaultChoice);
-  const timer = useCountDown(START_TIME, () => onChoice(currentChoice));
   return (
     <div className={styles['window']}>
       <h2 className={styles['heading']}>MAKE YOUR DECISION</h2>
@@ -41,7 +40,10 @@ function PlayerOptionChoice({ choices, defaultChoice, onChoice }: Props) {
           </div>
         ))}
       </div>
-      <div className={styles['timer']}>{timer}</div>
+      <Timer
+        startTime={START_TIME}
+        onTimerEnd={() => onChoice(currentChoice)}
+      />
     </div>
   );
 }
