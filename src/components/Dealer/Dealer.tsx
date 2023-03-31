@@ -1,6 +1,7 @@
 import React from 'react';
 import { DealerState } from '../../types/general';
 import Card from '../Card/Card';
+import CardSkeleton from '../CardSkeleton/CardSkeleton';
 
 import styles from './dealer.module.css';
 
@@ -22,7 +23,10 @@ function Dealer({ hand, score, isBusted }: Props) {
             ))}
           </>
         ) : (
-          <div>empty</div>
+          <>
+            <CardSkeleton />
+            <CardSkeleton />
+          </>
         )}
       </div>
     </div>

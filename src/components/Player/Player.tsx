@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlayerState } from '../../types/general';
 import Card from '../Card/Card';
+import CardSkeleton from '../CardSkeleton/CardSkeleton';
 
 import styles from './player.module.css';
 
@@ -24,7 +25,10 @@ function Player({ hand, score, isBusted }: Props) {
             ))}
           </>
         ) : (
-          <div>empty</div>
+          <>
+            <CardSkeleton />
+            <CardSkeleton />
+          </>
         )}
       </div>
       <p className={styles['player__name']}>{DEFAULT_PLAYER_NAME}</p>

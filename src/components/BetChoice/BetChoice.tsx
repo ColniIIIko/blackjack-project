@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useCountDown } from '../../hooks/useCountDown';
 import { Bet } from '../../types/general';
+import Timer from '../Timer/Timer';
 
 import styles from './betChoice.module.css';
 
@@ -14,7 +14,6 @@ const START_TIME = 30;
 
 function BetChoice({ onBet, defaultBet }: Props) {
   const [currentBet, setCurrentBet] = useState<Bet>(defaultBet);
-  const timer = useCountDown(START_TIME, () => onBet(currentBet));
 
   return (
     <div className={styles['window']}>
@@ -30,7 +29,10 @@ function BetChoice({ onBet, defaultBet }: Props) {
           </div>
         ))}
       </div>
-      <div className={styles['timer']}>{timer}</div>
+      <Timer
+        startTime={START_TIME}
+        onTimerEnd={() => onBet(currentBet)}
+      />
     </div>
   );
 }
