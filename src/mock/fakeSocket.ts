@@ -91,6 +91,12 @@ export class FakeSocket {
         }
       }
     });
+
+    this.on('end-game', () => {
+      this.execWithDelay(() => {
+        this.emit('start-game');
+      }, 2000);
+    });
   }
 
   public on(event: string, listener: CallableFunction) {
@@ -178,7 +184,7 @@ export class FakeSocket {
       this.execWithDelay(() => {
         const possibleChoices: PlayerDecision[] = ['hit', 'stand']; // faking only two options for now
         this.emit('make-decision', possibleChoices);
-      }, 3000);
+      }, 1000);
     } else {
       this.execWithDelay(() => {
         this.emit('end-game', { winner: 'dealer' });
@@ -192,6 +198,7 @@ export class FakeSocket {
 
   private handleDealerPlay() {
     const dealerResponse = this.drawDealerCard();
+    this.emit('dealer-draw', dealerResponse);
     this.execWithDelay(() => {
       if (dealerResponse.isBusted) {
         this.emit('end-game', { winner: 'player' });
@@ -207,7 +214,7 @@ export class FakeSocket {
         }
         this.emit('end-game', { winner });
       }
-    }, 500);
+    }, 1000);
   }
 
   private execWithDelay(callback: () => void, delay: number) {

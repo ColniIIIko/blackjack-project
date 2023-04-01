@@ -66,7 +66,6 @@ const useBlackJackState = () => {
     });
 
     socket.on('make-decision', () => {
-      console.log('here');
       setIsChoosing(true);
     });
 
@@ -75,12 +74,20 @@ const useBlackJackState = () => {
     });
 
     socket.on('dealer-draw', (dealer: DealerState) => {
+      console.log('dealer-draw', dealer);
       setDealerState(dealer);
     });
 
     socket.on('end-game', ({ winner }: { winner: Winner }) => {
       setIsGameEnd(true);
       setWinner(winner);
+    });
+
+    socket.on('start-game', () => {
+      setPlayerState(INITIAL_PLAYER_STATE);
+      setDealerState(INITIAL_DEALER_STATE);
+      setWinner(null);
+      setIsGameEnd(false);
     });
 
     socket.emit('start-game');
