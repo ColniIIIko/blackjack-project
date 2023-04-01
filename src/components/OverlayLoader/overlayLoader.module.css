@@ -1,0 +1,33 @@
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.spinner{
+    display: inline-block;
+    transform: translateZ(1px);
+}
+
+.spinner > div {
+    display: inline-block;
+    animation: lds-circle 2.4s cubic-bezier(.36,1.12,.68,.96) infinite;
+    will-change: transform;
+  }
+  @keyframes lds-circle {
+    0% {
+      transform: rotateY(0deg);
+    }
+    50% {
+      transform: rotateY(1080deg);
+    }
+    100% {
+      transform: rotateY(2160deg);
+    }
+}
