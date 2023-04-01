@@ -21,6 +21,7 @@ function BetChoice({ onBet, defaultBet }: Props) {
       <div className={styles['options']}>
         {BET_OPTIONS.map((opt) => (
           <div
+            key={opt}
             className={`${styles['option']} ${currentBet === opt ? styles['option_active'] : ''}`}
             onClick={() => setCurrentBet(opt)}
             onDoubleClick={() => onBet(currentBet)}

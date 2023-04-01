@@ -1,10 +1,12 @@
 .window{
-    padding: 1.5rem 0.8rem 1rem;
+    padding: 1.5rem 3rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: #141414;
     border-radius: 6px;
+    position: relative;
+    top: -10%;
 }
 
 .heading{

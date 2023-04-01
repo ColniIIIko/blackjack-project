@@ -2,6 +2,8 @@
     position: absolute;
     bottom: 5%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .score{
@@ -25,3 +27,16 @@
 .player__name{
     font-size: 1.4rem;
 }
+
+.player__info{
+    align-self: center;
+    width: max-content;
+}
+
+.player__bet{
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    font-size: 1.2rem;
+}
+

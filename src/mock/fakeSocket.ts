@@ -1,6 +1,6 @@
 import { CardDeck } from '../entities/CardDeck';
 import { Card } from '../types/cards';
-import { DealerState, PlayerChoice as PlayerDecision, PlayerState } from '../types/general';
+import { Bet, DealerState, PlayerChoice as PlayerDecision, PlayerState } from '../types/general';
 import { getCardsScore } from '../utils/cardStringToValue';
 
 const INITIAL_PLAYER_STATE = {
@@ -19,7 +19,7 @@ const INITIAL_DEALER_STATE = {
 const DEFAULT_NUMBER_OF_DECKS = 2;
 
 /*
-    GAME CYCLE
+    GAME CYCLE(basic cycle without bets and related features)
         starting game with "start-game"
         (emitted from client for now)
                     |
@@ -59,11 +59,25 @@ export class FakeSocket {
   }
 
   private initFakeEvents() {
-    // starting game and delaying initial card draw
+    // starting game and delaying bet phase draw
     this.on('start-game', () => {
       this.gameReset();
       this.execWithDelay(() => {
-        const states = this.drawInitialCards();
+        this.emit('make-bet');
+      }, 500);
+    });
+
+    this.on('player-bet', (bet: Bet) => {
+      const player = this.handlePlayerBet(bet);
+      //TODO: here should be check for player current balance or not?
+      this.execWithDelay(() => {
+        this.emit('player-bet-accepted', player);
+      }, 500);
+    });
+
+    this.on('player-bet-accepted', () => {
+      const states = this.drawInitialCards();
+      this.execWithDelay(() => {
         this.emit('initial-cards', states);
       }, 500);
     });
@@ -72,7 +86,6 @@ export class FakeSocket {
     //decision phase
     this.on('initial-cards', () => {
       this.execWithDelay(() => {
-        console.log('delayed');
         const possibleChoices: PlayerDecision[] = ['hit', 'stand']; // faking only two options for now
         this.emit('make-decision', possibleChoices);
       }, 2000);
@@ -115,8 +128,8 @@ export class FakeSocket {
 
   private gameReset() {
     this.deck = new CardDeck(DEFAULT_NUMBER_OF_DECKS);
-    this.playerState = INITIAL_PLAYER_STATE;
-    this.dealerState = INITIAL_DEALER_STATE;
+    this.playerState = { ...INITIAL_PLAYER_STATE };
+    this.dealerState = { ...INITIAL_DEALER_STATE };
   }
 
   private drawInitialCards() {
@@ -129,8 +142,8 @@ export class FakeSocket {
     this.dealerState.score = getCardsScore(dealerInitialCards);
 
     return {
-      player: this.playerState,
-      dealer: this.dealerState,
+      player: { ...this.playerState, hand: [...this.playerState.hand] },
+      dealer: { ...this.dealerState, hand: [...this.dealerState.hand] },
     };
   }
 
@@ -153,11 +166,8 @@ export class FakeSocket {
   private drawPlayerCard() {
     this.playerState.hand.push(this.deck.drawCard(false)!);
     this.playerState.score = getCardsScore(this.playerState.hand);
-    return {
-      hand: this.playerState.hand,
-      score: this.playerState.score,
-      isBusted: this.playerState.score > 21,
-    };
+    this.playerState.isBusted = this.playerState.score > 21;
+    return { ...this.playerState };
   }
 
   public drawDealerCard() {
@@ -168,13 +178,10 @@ export class FakeSocket {
     }
 
     this.dealerState.score = getCardsScore(this.dealerState.hand);
+    this.dealerState.isBusted = this.dealerState.score > 21;
+    this.dealerState.isEnded = this.dealerState.score >= 17;
 
-    return {
-      hand: this.dealerState.hand,
-      score: this.dealerState.score,
-      isBusted: this.dealerState.score > 21,
-      isEnded: this.dealerState.score >= 17,
-    };
+    return { ...this.dealerState, hand: [...this.dealerState.hand] };
   }
 
   private handlePlayerDraw() {
@@ -215,6 +222,12 @@ export class FakeSocket {
         this.emit('end-game', { winner });
       }
     }, 1000);
+  }
+
+  private handlePlayerBet(bet: Bet) {
+    this.playerState.bet = bet;
+
+    return { ...this.playerState, hand: [...this.playerState.hand] };
   }
 
   private execWithDelay(callback: () => void, delay: number) {

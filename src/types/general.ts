@@ -7,6 +7,7 @@ export type PlayerState = {
   hand: Card[];
   score: number;
   isBusted: boolean;
+  bet?: Bet;
 };
 
 export type DealerState = PlayerState & {

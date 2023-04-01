@@ -9,7 +9,7 @@ type Props = PlayerState;
 
 const DEFAULT_PLAYER_NAME = 'anonymous';
 
-function Player({ hand, score, isBusted }: Props) {
+function Player({ hand, score, isBusted, bet }: Props) {
   return (
     <div className={styles['player']}>
       <div className={styles['score']}>{score}</div>
@@ -31,7 +31,18 @@ function Player({ hand, score, isBusted }: Props) {
           </>
         )}
       </div>
-      <p className={styles['player__name']}>{DEFAULT_PLAYER_NAME}</p>
+      <div className={styles['player__info']}>
+        <p className={styles['player__name']}>{DEFAULT_PLAYER_NAME}</p>
+        {bet && (
+          <div className={styles['player__bet']}>
+            <img
+              src='/src/assets/chip.svg'
+              alt='player bet icon'
+            />
+            <span>{bet}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

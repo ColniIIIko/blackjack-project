@@ -5,6 +5,8 @@
     align-items: center;
     background: #141414;
     border-radius: 6px;
+    position: relative;
+    top: -10%;
 }
 
 .heading{
