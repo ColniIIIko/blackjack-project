@@ -17,7 +17,18 @@
     aspect-ratio: 1 / 1;
 }
 
+.score__busted{
+    background-color: #FEACAC;
+}
+
 .cards{
     display: flex;
     column-gap: 0.4rem;
+}
+
+.bust-label{
+    padding-top: 0.2rem;
+    font-size: 1.5rem;
+    color: #FEACAC;
+    text-align: center;
 }

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { DealerState } from '../../types/general';
 import Card from '../Card/Card';
@@ -10,7 +11,14 @@ type Props = Omit<DealerState, 'isEnded'>;
 function Dealer({ hand, score, isBusted }: Props) {
   return (
     <div className={styles['dealer']}>
-      <div className={styles['score']}>{score}</div>
+      <div
+        className={classNames({
+          [styles['score']]: true,
+          [styles['score__busted']]: isBusted,
+        })}
+      >
+        {score}
+      </div>
       <div className={styles['cards']}>
         {hand.length ? (
           <>
@@ -29,6 +37,7 @@ function Dealer({ hand, score, isBusted }: Props) {
           </>
         )}
       </div>
+      {isBusted && <p className={styles['bust-label']}>BUST</p>}
     </div>
   );
 }

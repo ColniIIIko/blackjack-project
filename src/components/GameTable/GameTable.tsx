@@ -10,8 +10,17 @@ import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
 import styles from './gameTable.module.css';
 
 function GameTable() {
-  const { playerState, dealerState, isChoosing, isBetting, playerOptions, winner, handleDecision, handleBet } =
-    useBlackJackState();
+  const {
+    playerState,
+    dealerState,
+    isChoosing,
+    isBetting,
+    playerOptions,
+    winner,
+    isGameEnd,
+    handleDecision,
+    handleBet,
+  } = useBlackJackState();
   const winLabel = useMemo(() => (winner === 'draw' ? 'DRAW' : `${winner?.toLocaleUpperCase()} WINS`), [winner]);
   return (
     <main className={styles['table']}>
@@ -29,7 +38,11 @@ function GameTable() {
         />
       </ModalWindow>
       {winner && <span className={styles['win-label']}>{winLabel}</span>}
-      <Player {...playerState} />
+      <Player
+        {...playerState}
+        isEnd={isGameEnd}
+        winner={winner}
+      />
       <Dealer {...dealerState} />
     </main>
   );

@@ -19,6 +19,27 @@
     aspect-ratio: 1 / 1;
 }
 
+.score__lose{
+    background-color: #FEACAC;
+}
+
+.score__win{
+    background-color: #69B06C;
+}
+
+.end-game-label{
+    font-size: 1.2rem;
+    padding-left: 0.2rem;
+}
+
+.end-game-label__lose{
+    color: #FEACAC;
+}
+
+.end-game-label__win{
+    color: #69B06C;
+}
+
 .cards{
     display: flex;
     column-gap: 0.4rem;
@@ -31,6 +52,13 @@
 .player__info{
     align-self: center;
     width: max-content;
+}
+
+.player__stat{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .player__bet{
