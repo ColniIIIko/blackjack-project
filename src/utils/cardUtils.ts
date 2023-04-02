@@ -20,3 +20,9 @@ export const getCardsScore = (cards: Card[]) => {
 
   return resultScore;
 };
+
+export const isBlackJack = (cards: Card[]) => {
+  if (cards.length !== 2) return false;
+
+  return getCardsScore(cards) === 21;
+};

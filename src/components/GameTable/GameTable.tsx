@@ -10,7 +10,8 @@ import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
 import styles from './gameTable.module.css';
 
 function GameTable() {
-  const { playerState, dealerState, isChoosing, isBetting, winner, handleDecision, handleBet } = useBlackJackState();
+  const { playerState, dealerState, isChoosing, isBetting, playerOptions, winner, handleDecision, handleBet } =
+    useBlackJackState();
   const winLabel = useMemo(() => (winner === 'draw' ? 'DRAW' : `${winner?.toLocaleUpperCase()} WINS`), [winner]);
   return (
     <main className={styles['table']}>
@@ -18,7 +19,7 @@ function GameTable() {
         <PlayerOptionChoice
           onChoice={(choice) => handleDecision(choice)}
           defaultChoice='stand'
-          choices={['hit', 'stand']}
+          choices={playerOptions}
         />
       </ModalWindow>
       <ModalWindow isVisible={isBetting}>
@@ -38,6 +39,8 @@ const INITIAL_PLAYER_STATE: PlayerState = {
   hand: [],
   isBusted: false,
   score: 0,
+  isBlackJack: false,
+  bet: 0,
 };
 
 const INITIAL_DEALER_STATE: DealerState = {
@@ -45,6 +48,7 @@ const INITIAL_DEALER_STATE: DealerState = {
   isBusted: false,
   score: 0,
   isEnded: false,
+  isBlackJack: false,
 };
 
 type States = {
@@ -57,6 +61,7 @@ const useBlackJackState = () => {
   const [isBetting, setIsBetting] = useState(false);
   const [playerState, setPlayerState] = useState<PlayerState>(INITIAL_PLAYER_STATE);
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
+  const [playerOptions, setPlayerOptions] = useState<PlayerDecision[]>([]);
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [winner, setWinner] = useState<Winner | null>(null);
 
@@ -84,7 +89,8 @@ const useBlackJackState = () => {
       setPlayerState(player);
     });
 
-    socket.on('make-decision', () => {
+    socket.on('make-decision', (possibleChoices: PlayerDecision[]) => {
+      setPlayerOptions(possibleChoices);
       setIsChoosing(true);
     });
 
@@ -106,12 +112,23 @@ const useBlackJackState = () => {
       setDealerState(INITIAL_DEALER_STATE);
       setWinner(null);
       setIsGameEnd(false);
+      setPlayerOptions([]);
     });
 
     socket.emit('start-game');
   }, []);
 
-  return { playerState, dealerState, isChoosing, isBetting, winner, isGameEnd, handleBet, handleDecision };
+  return {
+    playerState,
+    dealerState,
+    isChoosing,
+    isBetting,
+    winner,
+    isGameEnd,
+    playerOptions,
+    handleBet,
+    handleDecision,
+  };
 };
 
 export default GameTable;

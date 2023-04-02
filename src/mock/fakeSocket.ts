@@ -1,12 +1,14 @@
 import { CardDeck } from '../entities/CardDeck';
 import { Card } from '../types/cards';
 import { Bet, DealerState, PlayerChoice as PlayerDecision, PlayerState } from '../types/general';
-import { getCardsScore } from '../utils/cardStringToValue';
+import { getCardsScore } from '../utils/cardUtils';
 
 const INITIAL_PLAYER_STATE = {
   hand: [],
   isBusted: false,
   score: 0,
+  isBlackJack: false,
+  bet: 0,
 } satisfies PlayerState;
 
 const INITIAL_DEALER_STATE = {
@@ -14,9 +16,15 @@ const INITIAL_DEALER_STATE = {
   isBusted: false,
   score: 0,
   isEnded: false,
+  isBlackJack: false,
 } satisfies DealerState;
 
 const DEFAULT_NUMBER_OF_DECKS = 2;
+
+type States = {
+  player: PlayerState;
+  dealer: DealerState;
+};
 
 /*
     GAME CYCLE(basic cycle without bets and related features)
@@ -84,10 +92,14 @@ export class FakeSocket {
 
     //after drawing initial cards we are giving player a little time before
     //decision phase
-    this.on('initial-cards', () => {
+    this.on('initial-cards', (states: States) => {
       this.execWithDelay(() => {
-        const possibleChoices: PlayerDecision[] = ['hit', 'stand']; // faking only two options for now
-        this.emit('make-decision', possibleChoices);
+        if (states.player.isBlackJack) {
+          this.emit('player-decision', 'stand');
+        } else {
+          const possibleChoices: PlayerDecision[] = ['hit', 'stand', 'double down']; // faking only two options for now
+          this.emit('make-decision', possibleChoices);
+        }
       }, 2000);
     });
 
@@ -100,6 +112,10 @@ export class FakeSocket {
         }
         case 'stand': {
           this.handlePlayerStand();
+          break;
+        }
+        case 'double down': {
+          this.handlePlayerDoubleDown();
           break;
         }
       }
@@ -136,10 +152,12 @@ export class FakeSocket {
     const playersInitialCards = this.drawInitialPlayerCards();
     this.playerState.hand = playersInitialCards;
     this.playerState.score = getCardsScore(playersInitialCards);
+    this.playerState.isBlackJack = this.playerState.score === 21;
 
     const dealerInitialCards = this.drawInitialDealerCards();
     this.dealerState.hand = dealerInitialCards;
     this.dealerState.score = getCardsScore(dealerInitialCards);
+    this.dealerState.isBlackJack = this.dealerState.score === 21;
 
     return {
       player: { ...this.playerState, hand: [...this.playerState.hand] },
@@ -189,12 +207,27 @@ export class FakeSocket {
     this.emit('player-draw', playerResponse);
     if (!playerResponse.isBusted) {
       this.execWithDelay(() => {
-        const possibleChoices: PlayerDecision[] = ['hit', 'stand']; // faking only two options for now
+        const possibleChoices: PlayerDecision[] = ['hit', 'stand'];
         this.emit('make-decision', possibleChoices);
       }, 1000);
     } else {
       this.execWithDelay(() => {
-        this.emit('end-game', { winner: 'dealer' });
+        this.emit('end-game', { winner: 'dealer', playerWin: 0 });
+      }, 1000);
+    }
+  }
+
+  private handlePlayerDoubleDown() {
+    this.playerState.bet *= 2;
+    const playerResponse = this.drawPlayerCard();
+    this.emit('player-draw', playerResponse);
+    if (!playerResponse.isBusted) {
+      this.execWithDelay(() => {
+        this.handlePlayerStand();
+      }, 1000);
+    } else {
+      this.execWithDelay(() => {
+        this.emit('end-game', { winner: 'dealer', playerWin: 0 });
       }, 1000);
     }
   }
@@ -206,20 +239,21 @@ export class FakeSocket {
   private handleDealerPlay() {
     const dealerResponse = this.drawDealerCard();
     this.emit('dealer-draw', dealerResponse);
+
+    const playerWin = this.playerState.bet * (this.playerState.isBlackJack ? 1.5 : 2);
     this.execWithDelay(() => {
       if (dealerResponse.isBusted) {
-        this.emit('end-game', { winner: 'player' });
+        this.emit('end-game', { winner: 'player', playerWin });
       } else if (dealerResponse.score < 17) {
         this.handleDealerPlay();
       } else {
-        let winner = 'draw';
         if (dealerResponse.score < this.playerState.score) {
-          winner = 'player';
+          this.emit('end-game', { winner: 'player', playerWin });
+        } else if (dealerResponse.score > this.playerState.score) {
+          this.emit('end-game', { winner: 'dealer', playerWin: 0 });
+        } else {
+          this.emit('end-game', { winner: 'draw', playerWin: this.playerState.bet });
         }
-        if (dealerResponse.score > this.playerState.score) {
-          winner = 'dealer';
-        }
-        this.emit('end-game', { winner });
       }
     }, 1000);
   }

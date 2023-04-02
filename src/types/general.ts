@@ -7,11 +7,21 @@ export type PlayerState = {
   hand: Card[];
   score: number;
   isBusted: boolean;
-  bet?: Bet;
+  isBlackJack: boolean;
+  bet: Bet | 0;
 };
 
-export type DealerState = PlayerState & {
+export type DealerState = {
+  hand: Card[];
+  score: number;
+  isBusted: boolean;
   isEnded: boolean;
+  isBlackJack: boolean;
 };
 
 export type Winner = 'dealer' | 'player' | 'draw';
+
+export type EndGameState = {
+  winner: Winner;
+  playerWin: number;
+};

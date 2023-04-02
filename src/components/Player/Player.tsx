@@ -33,15 +33,13 @@ function Player({ hand, score, isBusted, bet }: Props) {
       </div>
       <div className={styles['player__info']}>
         <p className={styles['player__name']}>{DEFAULT_PLAYER_NAME}</p>
-        {bet && (
-          <div className={styles['player__bet']}>
-            <img
-              src='/src/assets/chip.svg'
-              alt='player bet icon'
-            />
-            <span>{bet}</span>
-          </div>
-        )}
+        <div className={styles['player__bet']}>
+          <img
+            src='/src/assets/chip.svg'
+            alt='player bet icon'
+          />
+          <span>{bet}</span>
+        </div>
       </div>
     </div>
   );
