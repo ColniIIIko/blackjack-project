@@ -1,0 +1,29 @@
+.card-hand{
+    position: relative;
+}
+
+.score{
+    position: relative;
+    right: -105%;
+    top: -5%;
+    font-size: 1.2rem;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 2px;
+    width: 2.2rem;
+    padding: 0.4rem;
+    aspect-ratio: 1 / 1;
+}
+
+.score__lose{
+    background-color: #FEACAC;
+}
+
+.score__win{
+    background-color: #69B06C;
+}
+
+.cards{
+    display: flex;
+    column-gap: 0.4rem;
+}

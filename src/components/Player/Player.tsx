@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { PlayerState, Winner } from '../../types/general';
-import Card from '../Card/Card';
-import CardSkeleton from '../CardSkeleton/CardSkeleton';
-import classNames from 'classnames';
+import CardHand from '../CardHand/CardHand';
+import PlayerStat from '../PlayerStat/PlayerStat';
 
 import styles from './player.module.css';
 
@@ -26,58 +25,24 @@ function Player({ hand, score, isBusted, bet, isEnd, winner }: Props) {
     return 'LOSE';
   }, [isBusted, isEnd, winner]);
 
+  const isWin = useMemo(() => isEnd && winner === 'player', [isEnd, winner]);
+  const isLose = useMemo(() => isBusted || (isEnd && winner === 'dealer'), [isBusted, isEnd, winner]);
+
   return (
     <div className={styles['player']}>
-      <div
-        className={classNames({
-          [styles['score']]: true,
-          [styles['score__lose']]: isBusted || (isEnd && winner === 'dealer'),
-          [styles['score__win']]: isEnd && winner === 'player',
-        })}
-      >
-        {score}
-      </div>
-      <div className={styles['cards']}>
-        {hand.length ? (
-          <>
-            {hand.map((card, index) => (
-              <Card
-                transformIndex={index}
-                key={`$${card.suit}_${card.value}_${index}`}
-                {...card}
-              />
-            ))}
-          </>
-        ) : (
-          <>
-            <CardSkeleton />
-            <CardSkeleton />
-          </>
-        )}
-      </div>
-      <div className={styles['player__info']}>
-        <p className={styles['player__name']}>{DEFAULT_PLAYER_NAME}</p>
-        <div className={styles['player__stat']}>
-          <div className={styles['player__bet']}>
-            <img
-              src='/src/assets/chip.svg'
-              alt='player bet icon'
-            />
-            <span>{bet}</span>
-          </div>
-          {endGameLabel && (
-            <p
-              className={classNames({
-                [styles['end-game-label']]: true,
-                [styles['end-game-label__lose']]: isBusted || (isEnd && winner === 'dealer'),
-                [styles['end-game-label__win']]: isEnd && winner === 'player',
-              })}
-            >
-              {endGameLabel}
-            </p>
-          )}
-        </div>
-      </div>
+      <CardHand
+        hand={hand}
+        score={score}
+        isWin={isWin}
+        isLose={isLose}
+      />
+      <PlayerStat
+        bet={bet}
+        endGameLabel={endGameLabel}
+        isLose={isLose}
+        isWin={isWin}
+        playerName={DEFAULT_PLAYER_NAME}
+      />
     </div>
   );
 }
