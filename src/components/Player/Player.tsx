@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { PlayerState, Winner } from '../../types/general';
 import CardHand from '../CardHand/CardHand';
-import PlayerStat from '../PlayerStat/PlayerStat';
+import PlayerInfo from '../PlayerInfo/PlayerInfo';
 
 import styles from './player.module.css';
 
@@ -36,7 +36,7 @@ function Player({ hand, score, isBusted, bet, isEnd, winner }: Props) {
         isWin={isWin}
         isLose={isLose}
       />
-      <PlayerStat
+      <PlayerInfo
         bet={bet}
         endGameLabel={endGameLabel}
         isLose={isLose}

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Bet } from '../../types/general';
 import classNames from 'classnames';
 
-import styles from './playerStat.module.css';
+import styles from './playerInfo.module.css';
 
 type Props = {
   endGameLabel: string | null;
@@ -12,7 +12,7 @@ type Props = {
   isLose: boolean;
 };
 
-function PlayerStat({ endGameLabel, playerName, bet, isWin, isLose }: Props) {
+function PlayerInfo({ endGameLabel, playerName, bet, isWin, isLose }: Props) {
   const labelStyle = useMemo(
     () =>
       classNames({
@@ -40,4 +40,4 @@ function PlayerStat({ endGameLabel, playerName, bet, isWin, isLose }: Props) {
   );
 }
 
-export default PlayerStat;
+export default PlayerInfo;

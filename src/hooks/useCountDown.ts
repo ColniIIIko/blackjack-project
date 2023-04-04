@@ -4,9 +4,12 @@ export const useCountDown = (startValue: number, action: () => void) => {
   const [counter, setCounter] = useState(startValue);
 
   useEffect(() => {
-    const id = setTimeout(() => {
-      setCounter((prev) => prev - 1);
-    }, 1000);
+    let id: number;
+    if (counter > 0) {
+      id = window.setTimeout(() => {
+        setCounter((prev) => prev - 1);
+      }, 1000);
+    }
     return () => clearTimeout(id);
   }, [counter]);
 
