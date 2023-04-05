@@ -1,4 +1,4 @@
-import { cardSuits, cardValues } from '../utils/cards';
+import { cardSuits, cardValues } from '../const';
 
 export type CardValue = typeof cardValues[number];
 export type CardSuit = typeof cardSuits[number];

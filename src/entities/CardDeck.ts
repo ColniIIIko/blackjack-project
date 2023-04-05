@@ -1,5 +1,5 @@
 import { Card } from '../types/cards';
-import { cardSuits, cardValues } from '../utils/cards';
+import { cardSuits, cardValues } from '../const';
 
 export class CardDeck {
   private deck: Card[] = [];
