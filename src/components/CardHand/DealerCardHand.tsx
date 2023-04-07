@@ -2,40 +2,28 @@ import React, { useMemo } from 'react';
 import { Card as CardType } from '../../types/cards';
 import Card from '../Card/Card';
 import CardSkeleton from '../CardSkeleton/CardSkeleton';
-import classNames from 'classnames';
 
 import styles from './cardHand.module.css';
+import classNames from 'classnames';
 
 type Props = {
-  isWin: boolean;
-  isLose: boolean;
-  isCurrent: boolean;
+  isBusted: boolean;
   score: number;
   hand: CardType[];
 };
 
-export default function CardHand({ isWin, isLose, isCurrent, score, hand }: Props) {
+function DealerCardHand({ score, hand, isBusted }: Props) {
   const scoreStyle = useMemo(
     () =>
       classNames({
         [styles['score']]: true,
-        [styles['score__lose']]: isLose,
-        [styles['score__win']]: isWin,
+        [styles['score__lose']]: isBusted,
       }),
-    [isWin, isLose]
-  );
-
-  const handStyle = useMemo(
-    () =>
-      classNames({
-        [styles['card-hand']]: true,
-        [styles['card-hand__current']]: isCurrent,
-      }),
-    [isCurrent]
+    [isBusted]
   );
 
   return (
-    <div className={handStyle}>
+    <div className={styles['card-hand']}>
       <div className={scoreStyle}>{score}</div>
       <div className={styles['cards']}>
         {hand.length ? (
@@ -58,3 +46,5 @@ export default function CardHand({ isWin, isLose, isCurrent, score, hand }: Prop
     </div>
   );
 }
+
+export default DealerCardHand;

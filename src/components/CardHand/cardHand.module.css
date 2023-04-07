@@ -6,10 +6,16 @@
     background-color: #FFF84E;
 }
 
+
+.hand__info{
+    align-self: center;
+    width: max-content;
+}
+
 .score{
     position: relative;
     right: -105%;
-    top: -5%;
+    bottom: -5%;
     font-size: 1.2rem;
     background-color: #FFFFFF;
     color: #000000;
@@ -17,6 +23,10 @@
     width: 2.2rem;
     padding: 0.4rem;
     aspect-ratio: 1 / 1;
+}
+
+.player-score{
+    bottom: -80%;
 }
 
 .card-hand .score__lose{
@@ -30,4 +40,23 @@
 .cards{
     display: flex;
     column-gap: 0.4rem;
+}
+
+.player-cards{
+    width: 99px;
+    height: 140px;
+    position: relative;
+}
+
+.player-hand{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.player-cards > img{
+    top: 0;
+    left: 0;
+    position: absolute;
+    transform: translate(calc(var(--index)*2.2rem),calc(-1*var(--index)*2.2rem));
 }

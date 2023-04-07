@@ -3,6 +3,17 @@
     bottom: 5%;
     text-align: center;
     display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.player-hand{
+    display: flex;
     flex-direction: row-reverse;
+    justify-content: center;
     column-gap: 5rem;
+}
+
+.player-name{
+    font-size: 1.4rem;
 }

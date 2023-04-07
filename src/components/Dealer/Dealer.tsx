@@ -1,20 +1,18 @@
 import React from 'react';
-import CardHand from '../CardHand/CardHand';
 
 import styles from './dealer.module.css';
 import { DealerState } from '../../types/state';
+import DealerCardHand from '../CardHand/DealerCardHand';
 
 type Props = DealerState;
 
 function Dealer({ hand }: Props) {
   return (
     <div className={styles['dealer']}>
-      <CardHand
+      <DealerCardHand
         hand={hand.cards}
-        isLose={hand.isBusted}
         score={hand.score}
-        isWin={false}
-        isCurrent={false}
+        isBusted={hand.isBusted}
       />
       {hand.isBusted && <p className={styles['bust-label']}>BUST</p>}
     </div>
