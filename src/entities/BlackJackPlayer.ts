@@ -1,4 +1,5 @@
 import { Player } from '../types/general';
+import { PlayerState } from '../types/state';
 import { BlackJackPlayerHand } from './BlackJackPlayerHand';
 
 export class BlackJackPlayer implements Player {
