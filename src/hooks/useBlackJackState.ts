@@ -1,21 +1,45 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FakeSocket } from '../mock/fakeSocket';
-import { Bet, DealerState, PlayerChoice, PlayerState, Winner } from '../types/general';
+import { Bet, PlayerChoice } from '../types/general';
+import { DealerState, PlayerState } from '../types/state';
 
 const INITIAL_PLAYER_STATE: PlayerState = {
-  hand: [],
-  isBusted: false,
-  score: 0,
-  isBlackJack: false,
-  bet: 0,
+  id: 'aaaa',
+  name: 'anonymous',
+  hand: [
+    {
+      id: '',
+      cards: [],
+      score: 0,
+      isBlackJack: false,
+      isBusted: false,
+      bet: 0,
+      result: null,
+    },
+  ],
+  currentHand: {
+    id: 'asf',
+    cards: [],
+    score: 0,
+    isBlackJack: false,
+    isBusted: false,
+    bet: 0,
+    result: null,
+  },
+  isSplitted: false,
+  totalWin: null,
+  balance: 1000,
 };
 
 const INITIAL_DEALER_STATE: DealerState = {
-  hand: [],
-  isBusted: false,
-  score: 0,
+  hand: {
+    id: '',
+    cards: [],
+    score: 0,
+    isBlackJack: false,
+    isBusted: false,
+  },
   isEnded: false,
-  isBlackJack: false,
 };
 
 type States = {
@@ -30,7 +54,6 @@ export const useBlackJackState = (socket: FakeSocket) => {
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
   const [playerOptions, setPlayerOptions] = useState<PlayerChoice[]>([]);
   const [isGameEnd, setIsGameEnd] = useState(false);
-  const [winner, setWinner] = useState<Winner | null>(null);
 
   const handleDecision = useCallback(
     (decision: PlayerChoice) => {
@@ -71,24 +94,28 @@ export const useBlackJackState = (socket: FakeSocket) => {
       setPlayerState(player);
     });
 
+    socket.on('next-hand', (player: PlayerState) => {
+      setPlayerState(player);
+    });
+
     socket.on('dealer-draw', (dealer: DealerState) => {
       setDealerState(dealer);
     });
 
-    socket.on('end-game', ({ winner }: { winner: Winner }) => {
+    socket.on('end-game', (player: PlayerState) => {
       setIsGameEnd(true);
-      setWinner(winner);
+      console.log(player);
+      setPlayerState(player);
     });
 
     socket.on('start-game', () => {
       setPlayerState(INITIAL_PLAYER_STATE);
       setDealerState(INITIAL_DEALER_STATE);
-      setWinner(null);
       setIsGameEnd(false);
       setPlayerOptions([]);
     });
 
-    socket.emit('start-game');
+    socket.emit('connect', { id: 'aaaa', name: 'anonymous', balance: 1000 });
   }, [socket]);
 
   return {
@@ -96,7 +123,6 @@ export const useBlackJackState = (socket: FakeSocket) => {
     dealerState,
     isChoosing,
     isBetting,
-    winner,
     isGameEnd,
     playerOptions,
     handleBet,

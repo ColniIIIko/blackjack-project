@@ -1,48 +1,36 @@
-import React, { useMemo } from 'react';
-import { PlayerState, Winner } from '../../types/general';
+import React from 'react';
 import CardHand from '../CardHand/CardHand';
 import PlayerInfo from '../PlayerInfo/PlayerInfo';
 
 import styles from './player.module.css';
+import { PlayerState } from '../../types/state';
+import { getEndGameLabel } from '../../utils/getPlayerEndGameLabel';
 
 type Props = PlayerState & {
   isEnd: boolean;
-  winner: Winner | null;
 };
 
-const DEFAULT_PLAYER_NAME = 'anonymous';
-
-function Player({ hand, score, isBusted, bet, isEnd, winner }: Props) {
-  const endGameLabel = useMemo(() => {
-    if (!isEnd) return null;
-
-    if (isBusted) return 'BUST';
-
-    if (winner === 'player') return 'WIN';
-
-    if (winner === 'draw') return 'DRAW';
-
-    return 'LOSE';
-  }, [isBusted, isEnd, winner]);
-
-  const isWin = useMemo(() => isEnd && winner === 'player', [isEnd, winner]);
-  const isLose = useMemo(() => isBusted || (isEnd && winner === 'dealer'), [isBusted, isEnd, winner]);
-
+function Player({ hand, isEnd, name, currentHand }: Props) {
   return (
     <div className={styles['player']}>
-      <CardHand
-        hand={hand}
-        score={score}
-        isWin={isWin}
-        isLose={isLose}
-      />
-      <PlayerInfo
-        bet={bet}
-        endGameLabel={endGameLabel}
-        isLose={isLose}
-        isWin={isWin}
-        playerName={DEFAULT_PLAYER_NAME}
-      />
+      {hand.map((hand) => (
+        <div key={hand.id}>
+          <CardHand
+            hand={hand.cards}
+            score={hand.score}
+            isWin={isEnd && hand.result === 'player'}
+            isLose={hand.isBusted || (isEnd && hand.result === 'dealer')}
+            isCurrent={currentHand.id === hand.id}
+          />
+          <PlayerInfo
+            bet={hand.bet}
+            endGameLabel={getEndGameLabel(isEnd, hand.isBusted, hand.result)}
+            isWin={isEnd && hand.result === 'player'}
+            isLose={hand.isBusted || (isEnd && hand.result === 'dealer')}
+            playerName={name}
+          />
+        </div>
+      ))}
     </div>
   );
 }

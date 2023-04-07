@@ -2,6 +2,10 @@
     position: relative;
 }
 
+.card-hand__current .score{ 
+    background-color: #FFF84E;
+}
+
 .score{
     position: relative;
     right: -105%;
@@ -15,11 +19,11 @@
     aspect-ratio: 1 / 1;
 }
 
-.score__lose{
+.card-hand .score__lose{
     background-color: #FEACAC;
 }
 
-.score__win{
+.card-hand .score__win{
     background-color: #69B06C;
 }
 

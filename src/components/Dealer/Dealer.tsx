@@ -1,21 +1,22 @@
 import React from 'react';
 import CardHand from '../CardHand/CardHand';
-import { DealerState } from '../../types/general';
 
 import styles from './dealer.module.css';
+import { DealerState } from '../../types/state';
 
-type Props = Omit<DealerState, 'isEnded'>;
+type Props = DealerState;
 
-function Dealer({ hand, score, isBusted }: Props) {
+function Dealer({ hand }: Props) {
   return (
     <div className={styles['dealer']}>
       <CardHand
-        hand={hand}
-        isLose={isBusted}
-        score={score}
+        hand={hand.cards}
+        isLose={hand.isBusted}
+        score={hand.score}
         isWin={false}
+        isCurrent={false}
       />
-      {isBusted && <p className={styles['bust-label']}>BUST</p>}
+      {hand.isBusted && <p className={styles['bust-label']}>BUST</p>}
     </div>
   );
 }

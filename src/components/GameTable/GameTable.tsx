@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useBlackJackState } from '../../hooks/useBlackJackState';
 import { socket } from '../../mock/fakeSocket';
 import BetChoice from '../BetChoice/BetChoice';
@@ -10,18 +10,8 @@ import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
 import styles from './gameTable.module.css';
 
 function GameTable() {
-  const {
-    playerState,
-    dealerState,
-    isChoosing,
-    isBetting,
-    playerOptions,
-    winner,
-    isGameEnd,
-    handleDecision,
-    handleBet,
-  } = useBlackJackState(socket);
-  const winLabel = useMemo(() => (winner === 'draw' ? 'DRAW' : `${winner?.toLocaleUpperCase()} WINS`), [winner]);
+  const { playerState, dealerState, isChoosing, isBetting, playerOptions, isGameEnd, handleDecision, handleBet } =
+    useBlackJackState(socket);
   return (
     <main className={styles['table']}>
       <ModalWindow isVisible={isChoosing}>
@@ -37,11 +27,9 @@ function GameTable() {
           onBet={(bet) => handleBet(bet)}
         />
       </ModalWindow>
-      {winner && <span className={styles['win-label']}>{winLabel}</span>}
       <Player
         {...playerState}
         isEnd={isGameEnd}
-        winner={winner}
       />
       <Dealer {...dealerState} />
     </main>

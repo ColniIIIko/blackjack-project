@@ -3,25 +3,30 @@ import { Card } from './cards';
 export type PlayerChoice = 'double down' | 'hit' | 'stand' | 'split';
 export type Bet = 20 | 25 | 50 | 100 | 200;
 
-export type PlayerState = {
-  hand: Card[];
-  score: number;
-  isBusted: boolean;
-  isBlackJack: boolean;
-  bet: Bet | 0;
-};
+export interface User {
+  id: string;
+  name: string;
+  balance: number;
+}
 
-export type DealerState = {
-  hand: Card[];
+export interface Player extends User {
+  hand: Hand[];
+  currentHand: Hand;
+  isSplitted: boolean;
+  totalWin: number | null;
+}
+
+export interface Hand {
+  id: string;
+  cards: Card[];
   score: number;
-  isBusted: boolean;
-  isEnded: boolean;
   isBlackJack: boolean;
-};
+  isBusted: boolean;
+}
+
+export interface Dealer {
+  hand: Hand;
+  isEnded: boolean;
+}
 
 export type Winner = 'dealer' | 'player' | 'draw';
-
-export type EndGameState = {
-  winner: Winner;
-  playerWin: number;
-};

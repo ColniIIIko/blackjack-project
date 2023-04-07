@@ -9,11 +9,12 @@ import styles from './cardHand.module.css';
 type Props = {
   isWin: boolean;
   isLose: boolean;
+  isCurrent: boolean;
   score: number;
   hand: CardType[];
 };
 
-export default function CardHand({ isWin, isLose, score, hand }: Props) {
+export default function CardHand({ isWin, isLose, isCurrent, score, hand }: Props) {
   const scoreStyle = useMemo(
     () =>
       classNames({
@@ -24,8 +25,17 @@ export default function CardHand({ isWin, isLose, score, hand }: Props) {
     [isWin, isLose]
   );
 
+  const handStyle = useMemo(
+    () =>
+      classNames({
+        [styles['card-hand']]: true,
+        [styles['card-hand__current']]: isCurrent,
+      }),
+    [isCurrent]
+  );
+
   return (
-    <div className={styles['card-hand']}>
+    <div className={handStyle}>
       <div className={scoreStyle}>{score}</div>
       <div className={styles['cards']}>
         {hand.length ? (

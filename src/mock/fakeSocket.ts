@@ -1,30 +1,11 @@
 import { CardDeck } from '../entities/CardDeck';
 import { Card } from '../types/cards';
-import { Bet, DealerState, PlayerChoice as PlayerDecision, PlayerState } from '../types/general';
-import { getCardsScore } from '../utils/cardUtils';
-
-const INITIAL_PLAYER_STATE = {
-  hand: [],
-  isBusted: false,
-  score: 0,
-  isBlackJack: false,
-  bet: 0,
-} satisfies PlayerState;
-
-const INITIAL_DEALER_STATE = {
-  hand: [],
-  isBusted: false,
-  score: 0,
-  isEnded: false,
-  isBlackJack: false,
-} satisfies DealerState;
+import { Bet, User, PlayerChoice as PlayerDecision, Hand } from '../types/general';
+import { BlackJackPlayer } from '../entities/BlackJackPlayer';
+import { BlackJackDealer } from '../entities/BlackJackDealer';
+import { BlackJackHand } from '../entities/BlackJackHand';
 
 const DEFAULT_NUMBER_OF_DECKS = 2;
-
-type States = {
-  player: PlayerState;
-  dealer: DealerState;
-};
 
 /*
     GAME CYCLE(basic cycle without bets and related features)
@@ -58,9 +39,11 @@ type States = {
 
 export class FakeSocket {
   private eventsMap: Record<string, CallableFunction[]> = {};
-  private playerState: PlayerState = INITIAL_PLAYER_STATE;
-  private dealerState: DealerState = INITIAL_DEALER_STATE;
+
+  private dealer: BlackJackDealer = new BlackJackDealer();
   private deck: CardDeck = new CardDeck(DEFAULT_NUMBER_OF_DECKS);
+  private player: BlackJackPlayer | null = null;
+  private isSingle: boolean = true;
 
   constructor() {
     this.initFakeEvents();
@@ -68,11 +51,14 @@ export class FakeSocket {
 
   private initFakeEvents() {
     // starting game and delaying bet phase draw
+
+    this.on('connect', (player: User) => {
+      this.player = new BlackJackPlayer(player.id, player.name, player.balance);
+      this.emit('start-game');
+    });
+
     this.on('start-game', () => {
-      this.gameReset();
-      this.execWithDelay(() => {
-        this.emit('make-bet');
-      }, 500);
+      this.startGame();
     });
 
     this.on('player-bet', (bet: Bet) => {
@@ -92,12 +78,15 @@ export class FakeSocket {
 
     //after drawing initial cards we are giving player a little time before
     //decision phase
-    this.on('initial-cards', (states: States) => {
+    this.on('initial-cards', () => {
       this.execWithDelay(() => {
-        if (states.player.isBlackJack) {
+        if (this.player!.currentHand.isBlackJack) {
           this.emit('player-decision', 'stand');
         } else {
-          const possibleChoices: PlayerDecision[] = ['hit', 'stand', 'double down']; // faking only two options for now
+          const possibleChoices: PlayerDecision[] = ['hit', 'stand', 'double down'];
+          if (this.player?.hand.length === 1 && this.player!.currentHand.isSplitPossible) {
+            possibleChoices.push('split');
+          }
           this.emit('make-decision', possibleChoices);
         }
       }, 2000);
@@ -117,6 +106,9 @@ export class FakeSocket {
         case 'double down': {
           this.handlePlayerDoubleDown();
           break;
+        }
+        case 'split': {
+          this.handlePlayerSplit();
         }
       }
     });
@@ -142,26 +134,30 @@ export class FakeSocket {
     }
   }
 
+  private startGame() {
+    this.gameReset();
+    this.execWithDelay(() => {
+      this.emit('make-bet');
+    }, 500);
+  }
+
   private gameReset() {
     this.deck = new CardDeck(DEFAULT_NUMBER_OF_DECKS);
-    this.playerState = { ...INITIAL_PLAYER_STATE };
-    this.dealerState = { ...INITIAL_DEALER_STATE };
+    this.player?.reset();
+    this.dealer.reset();
   }
 
   private drawInitialCards() {
     const playersInitialCards = this.drawInitialPlayerCards();
-    this.playerState.hand = playersInitialCards;
-    this.playerState.score = getCardsScore(playersInitialCards);
-    this.playerState.isBlackJack = this.playerState.score === 21;
+    this.player!.currentHand.cards = playersInitialCards;
 
     const dealerInitialCards = this.drawInitialDealerCards();
-    this.dealerState.hand = dealerInitialCards;
-    this.dealerState.score = getCardsScore(dealerInitialCards);
-    this.dealerState.isBlackJack = this.dealerState.score === 21;
+    const bjDealerHand = new BlackJackHand(dealerInitialCards);
+    this.dealer.hand = bjDealerHand;
 
     return {
-      player: { ...this.playerState, hand: [...this.playerState.hand] },
-      dealer: { ...this.dealerState, hand: [...this.dealerState.hand] },
+      player: this.player!.toJSON(),
+      dealer: this.dealer.toJSON(),
     };
   }
 
@@ -182,86 +178,129 @@ export class FakeSocket {
   }
 
   private drawPlayerCard() {
-    this.playerState.hand.push(this.deck.drawCard(false)!);
-    this.playerState.score = getCardsScore(this.playerState.hand);
-    this.playerState.isBusted = this.playerState.score > 21;
-    return { ...this.playerState };
+    this.player!.currentHand.cards.push(this.deck.drawCard(false)!);
+    return this.player!.toJSON();
   }
 
   public drawDealerCard() {
-    if (this.dealerState.hand[1].isHidden) {
-      this.dealerState.hand[1].isHidden = false;
-    } else if (getCardsScore(this.dealerState.hand) < 17) {
-      this.dealerState.hand.push(this.deck.drawCard(false)!);
+    if (this.dealer.hand.cards[1].isHidden) {
+      this.dealer.hand.cards[1].isHidden = false;
+    } else if (!this.dealer.isEnded) {
+      this.dealer.hand.cards.push(this.deck.drawCard(false)!);
     }
 
-    this.dealerState.score = getCardsScore(this.dealerState.hand);
-    this.dealerState.isBusted = this.dealerState.score > 21;
-    this.dealerState.isEnded = this.dealerState.score >= 17;
-
-    return { ...this.dealerState, hand: [...this.dealerState.hand] };
+    return this.dealer.toJSON();
   }
 
   private handlePlayerDraw() {
     const playerResponse = this.drawPlayerCard();
     this.emit('player-draw', playerResponse);
-    if (!playerResponse.isBusted) {
+    if (!playerResponse.currentHand.isBusted) {
       this.execWithDelay(() => {
         const possibleChoices: PlayerDecision[] = ['hit', 'stand'];
         this.emit('make-decision', possibleChoices);
       }, 1000);
+    } else if (this.player!.hasNextHand()) {
+      this.handleNextHand();
     } else {
       this.execWithDelay(() => {
-        this.emit('end-game', { winner: 'dealer', playerWin: 0 });
+        this.setGameResults(this.dealer.hand);
+        this.emit('end-game', this.player!.toJSON());
       }, 1000);
     }
   }
 
   private handlePlayerDoubleDown() {
-    this.playerState.bet *= 2;
+    this.player!.currentHand.bet *= 2;
     const playerResponse = this.drawPlayerCard();
     this.emit('player-draw', playerResponse);
-    if (!playerResponse.isBusted) {
+    if (!playerResponse.currentHand.isBusted) {
       this.execWithDelay(() => {
         this.handlePlayerStand();
       }, 1000);
     } else {
       this.execWithDelay(() => {
-        this.emit('end-game', { winner: 'dealer', playerWin: 0 });
+        this.setGameResults(this.dealer.hand);
+        this.emit('end-game', this.player!.toJSON());
       }, 1000);
     }
   }
 
+  private handlePlayerSplit() {
+    if (this.player!.splitHand()) {
+      this.emit('player-draw', this.player?.toJSON());
+      this.execWithDelay(() => {
+        this.player!.hand[0].cards.push(this.deck.drawCard(false)!);
+        this.player!.hand[1].cards.push(this.deck.drawCard(false)!);
+        this.emit('player-draw', this.player?.toJSON());
+
+        this.execWithDelay(() => {
+          const possibleChoices: PlayerDecision[] = ['hit', 'stand'];
+          this.emit('make-decision', possibleChoices);
+        }, 300);
+      }, 500);
+    }
+  }
+
   private handlePlayerStand() {
-    this.handleDealerPlay();
+    if (this.player!.hasNextHand()) {
+      this.handleNextHand();
+    } else {
+      this.handleDealerPlay();
+    }
+  }
+
+  private handleNextHand() {
+    this.player!.setNextHand();
+    this.emit('next-hand', this.player!.toJSON());
+    this.execWithDelay(() => {
+      const possibleChoices: PlayerDecision[] = ['hit', 'stand'];
+      this.emit('make-decision', possibleChoices);
+    }, 100);
   }
 
   private handleDealerPlay() {
     const dealerResponse = this.drawDealerCard();
     this.emit('dealer-draw', dealerResponse);
 
-    const playerWin = this.playerState.bet * (this.playerState.isBlackJack ? 1.5 : 2);
     this.execWithDelay(() => {
-      if (dealerResponse.isBusted) {
-        this.emit('end-game', { winner: 'player', playerWin });
-      } else if (dealerResponse.score < 17) {
+      if (!dealerResponse.isEnded) {
         this.handleDealerPlay();
       } else {
-        if (dealerResponse.score < this.playerState.score) {
-          this.emit('end-game', { winner: 'player', playerWin });
-        } else if (dealerResponse.score > this.playerState.score) {
-          this.emit('end-game', { winner: 'dealer', playerWin: 0 });
-        } else {
-          this.emit('end-game', { winner: 'draw', playerWin: this.playerState.bet });
-        }
+        this.setGameResults(dealerResponse.hand);
+        this.emit('end-game', this.player!.toJSON());
       }
-    }, 1000);
+    }, 600);
+  }
+
+  private setGameResults(dealerHand: Hand) {
+    console.log('before', this.player!.hand);
+    this.player!.hand.forEach((hand) => {
+      if (this.player!.totalWin === null) this.player!.totalWin = 0;
+
+      const playerWin = hand.bet * (hand.isBlackJack && !this.player!.isSplitted ? 1.5 : 2);
+
+      if (hand.isBusted) {
+        hand.result = 'dealer';
+      } else if (dealerHand.isBusted) {
+        hand.result = 'player';
+        this.player!.totalWin += playerWin;
+      } else if (dealerHand.score > hand.score) {
+        hand.result = 'dealer';
+      } else if (dealerHand.score < hand.score) {
+        hand.result = 'player';
+        this.player!.totalWin += playerWin;
+      } else {
+        hand.result = 'draw';
+        this.player!.totalWin += hand.bet;
+      }
+    });
+    console.log(this.player!.hand);
   }
 
   private handlePlayerBet(bet: Bet) {
-    this.playerState.bet = bet;
-
-    return { ...this.playerState, hand: [...this.playerState.hand] };
+    this.player!.currentHand.bet = bet;
+    return this.player!.toJSON();
   }
 
   private execWithDelay(callback: () => void, delay: number) {
