@@ -7,11 +7,13 @@ export class BlackJackPlayer implements Player {
   public currentHand: BlackJackPlayerHand;
   public isSplitted: boolean;
   public totalWin: number | null;
+  public insuranceBet: number | null;
   constructor(public id: string, public name: string, public balance: number) {
     this.hand = [new BlackJackPlayerHand()];
     this.currentHand = this.hand[0];
     this.isSplitted = false;
     this.totalWin = null;
+    this.insuranceBet = null;
   }
 
   public reset() {
@@ -19,6 +21,7 @@ export class BlackJackPlayer implements Player {
     this.currentHand = this.hand[0];
     this.isSplitted = false;
     this.totalWin = null;
+    this.insuranceBet = null;
   }
 
   public splitHand() {
@@ -54,6 +57,7 @@ export class BlackJackPlayer implements Player {
       currentHand: this.currentHand,
       isSplitted: this.isSplitted,
       totalWin: this.totalWin,
+      insuranceBet: this.insuranceBet,
     };
   }
 }

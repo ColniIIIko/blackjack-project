@@ -9,7 +9,7 @@ type Props = PlayerState & {
   isEnd: boolean;
 };
 
-function Player({ hand, isEnd, name, currentHand }: Props) {
+function Player({ hand, isEnd, name, currentHand, insuranceBet }: Props) {
   return (
     <div className={styles['player']}>
       <div className={styles['player-hand']}>
@@ -27,7 +27,20 @@ function Player({ hand, isEnd, name, currentHand }: Props) {
           </div>
         ))}
       </div>
-      <p className={styles['player-name']}>{name}</p>
+      <div className={styles['player-info']}>
+        <p className={styles['player-name']}>{name}</p>
+        {insuranceBet && (
+          <div className={styles['insurance-bet']}>
+            <img
+              height={'18px'}
+              width={'18px'}
+              src='/src/assets/chip.svg'
+              alt='player bet icon'
+            />
+            <span>{insuranceBet}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

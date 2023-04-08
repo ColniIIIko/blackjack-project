@@ -8,10 +8,21 @@ import Player from '../Player/Player';
 import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
 
 import styles from './gameTable.module.css';
+import InsuranceOptionChoice from '../InsuranceOptionChoice/InsuranceOptionChoice';
 
 function GameTable() {
-  const { playerState, dealerState, isChoosing, isBetting, playerOptions, isGameEnd, handleDecision, handleBet } =
-    useBlackJackState(socket);
+  const {
+    playerState,
+    dealerState,
+    isChoosing,
+    isBetting,
+    isInsurance,
+    playerOptions,
+    isGameEnd,
+    handleInsurance,
+    handleDecision,
+    handleBet,
+  } = useBlackJackState(socket);
   return (
     <main className={styles['table']}>
       <ModalWindow isVisible={isChoosing}>
@@ -26,6 +37,9 @@ function GameTable() {
           defaultBet={20}
           onBet={(bet) => handleBet(bet)}
         />
+      </ModalWindow>
+      <ModalWindow isVisible={isInsurance}>
+        <InsuranceOptionChoice onChoice={(choice) => handleInsurance(choice)} />
       </ModalWindow>
       <Player
         {...playerState}

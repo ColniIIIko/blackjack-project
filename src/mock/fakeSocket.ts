@@ -82,6 +82,8 @@ export class FakeSocket {
       this.execWithDelay(() => {
         if (this.player!.currentHand.isBlackJack) {
           this.emit('player-decision', 'stand');
+        } else if (this.dealer.hand.cards[0].value === 'A') {
+          this.emit('make-insurance');
         } else {
           const possibleChoices: PlayerDecision[] = ['hit', 'stand', 'double down'];
           if (this.player?.hand.length === 1 && this.player!.currentHand.isSplitPossible) {
@@ -92,8 +94,17 @@ export class FakeSocket {
       }, 2000);
     });
 
+    this.on('player-insurance', (decision: boolean) => {
+      if (decision) {
+        this.player!.insuranceBet = this.player!.hand[0].bet * 0.5;
+      }
+
+      this.execWithDelay(() => {
+        this.handleInsurance();
+      }, 500);
+    });
+
     this.on('player-decision', (decision: PlayerDecision) => {
-      // for now we have only to options: hit and stand
       switch (decision) {
         case 'hit': {
           this.handlePlayerDraw();
@@ -192,6 +203,24 @@ export class FakeSocket {
     return this.dealer.toJSON();
   }
 
+  private handleInsurance() {
+    this.execWithDelay(() => {
+      if (this.dealer.getHiddenCardValue() === 10) {
+        if (this.player!.insuranceBet) {
+          this.player!.totalWin = this.player!.insuranceBet * 3;
+          this.emit('player-update', this.player?.toJSON());
+        }
+        this.handleDealerPlay();
+      } else {
+        const possibleChoices: PlayerDecision[] = ['hit', 'stand', 'double down'];
+        if (this.player?.hand.length === 1 && this.player!.currentHand.isSplitPossible) {
+          possibleChoices.push('split');
+        }
+        this.emit('make-decision', possibleChoices);
+      }
+    }, 500);
+  }
+
   private handlePlayerDraw() {
     const playerResponse = this.drawPlayerCard();
     this.emit('player-draw', playerResponse);
@@ -274,7 +303,6 @@ export class FakeSocket {
   }
 
   private setGameResults(dealerHand: Hand) {
-    console.log('before', this.player!.hand);
     this.player!.hand.forEach((hand) => {
       if (this.player!.totalWin === null) this.player!.totalWin = 0;
 
@@ -295,7 +323,6 @@ export class FakeSocket {
         this.player!.totalWin += hand.bet;
       }
     });
-    console.log(this.player!.hand);
   }
 
   private handlePlayerBet(bet: Bet) {

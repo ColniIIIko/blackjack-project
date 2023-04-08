@@ -16,15 +16,17 @@ function DealerCardHand({ score, hand, isBusted }: Props) {
   const scoreStyle = useMemo(
     () =>
       classNames({
-        [styles['score']]: true,
-        [styles['score__lose']]: isBusted,
+        [styles['score-box']]: true,
+        [styles['score-box__lose']]: isBusted,
       }),
     [isBusted]
   );
 
   return (
     <div className={styles['card-hand']}>
-      <div className={scoreStyle}>{score}</div>
+      <div className={styles['score']}>
+        <div className={scoreStyle}>{score}</div>
+      </div>
       <div className={styles['cards']}>
         {hand.length ? (
           <>

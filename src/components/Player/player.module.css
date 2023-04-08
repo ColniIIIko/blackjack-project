@@ -17,3 +17,13 @@
 .player-name{
     font-size: 1.4rem;
 }
+
+.insurance-bet{
+    display: flex;
+    font-size: 0.8rem;
+    align-self: flex-start;
+    column-gap: 0.4rem;
+    align-items: center;
+    position: absolute;
+    bottom: -10%;
+}

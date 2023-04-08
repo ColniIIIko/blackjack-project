@@ -12,6 +12,13 @@ export class BlackJackDealer implements Dealer {
     this.hand = new BlackJackHand();
   }
 
+  public getHiddenCardValue() {
+    const cardValue = this.hand.cards[1].value;
+    if (cardValue === 'A') return 11;
+    const value = Number(cardValue);
+    return isNaN(value) ? 10 : value;
+  }
+
   get isEnded() {
     if (!this.hand) return false;
 

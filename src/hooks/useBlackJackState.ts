@@ -29,6 +29,7 @@ const INITIAL_PLAYER_STATE: PlayerState = {
   isSplitted: false,
   totalWin: null,
   balance: 1000,
+  insuranceBet: null,
 };
 
 const INITIAL_DEALER_STATE: DealerState = {
@@ -50,6 +51,7 @@ type States = {
 export const useBlackJackState = (socket: FakeSocket) => {
   const [isChoosing, setIsChoosing] = useState(false);
   const [isBetting, setIsBetting] = useState(false);
+  const [isInsurance, setIsInsurance] = useState(false);
   const [playerState, setPlayerState] = useState<PlayerState>(INITIAL_PLAYER_STATE);
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
   const [playerOptions, setPlayerOptions] = useState<PlayerChoice[]>([]);
@@ -71,7 +73,19 @@ export const useBlackJackState = (socket: FakeSocket) => {
     [socket]
   );
 
+  const handleInsurance = useCallback(
+    (decision: boolean) => {
+      setIsInsurance(false);
+      socket.emit('player-insurance', decision);
+    },
+    [socket]
+  );
+
   useEffect(() => {
+    socket.on('player-update', (player: PlayerState) => {
+      setPlayerState(player);
+    });
+
     socket.on('initial-cards', (states: States) => {
       setPlayerState(states.player);
       setDealerState(states.dealer);
@@ -83,6 +97,10 @@ export const useBlackJackState = (socket: FakeSocket) => {
 
     socket.on('player-bet-accepted', (player: PlayerState) => {
       setPlayerState(player);
+    });
+
+    socket.on('make-insurance', () => {
+      setIsInsurance(true);
     });
 
     socket.on('make-decision', (possibleChoices: PlayerChoice[]) => {
@@ -104,7 +122,7 @@ export const useBlackJackState = (socket: FakeSocket) => {
 
     socket.on('end-game', (player: PlayerState) => {
       setIsGameEnd(true);
-      console.log(player);
+      console.log('TOTAL WIN', player.totalWin);
       setPlayerState(player);
     });
 
@@ -123,9 +141,11 @@ export const useBlackJackState = (socket: FakeSocket) => {
     dealerState,
     isChoosing,
     isBetting,
+    isInsurance,
     isGameEnd,
     playerOptions,
     handleBet,
     handleDecision,
+    handleInsurance,
   };
 };

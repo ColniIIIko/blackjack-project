@@ -22,10 +22,19 @@ function PlayerCardHand({ isWin, isLose, isCurrent, score, hand, endGameLabel, b
   const scoreStyle = useMemo(
     () =>
       classNames({
-        [styles['score']]: true,
-        [styles['player-score']]: true,
-        [styles['score__lose']]: isLose,
-        [styles['score__win']]: isWin,
+        [styles['score-box']]: true,
+        [styles['score-box__lose']]: isLose,
+        [styles['score-box__win']]: isWin,
+      }),
+    [isWin, isLose]
+  );
+
+  const labelStyle = useMemo(
+    () =>
+      classNames({
+        [styles['end-game-label']]: true,
+        [styles['end-game-label__lose']]: isLose,
+        [styles['end-game-label__win']]: isWin,
       }),
     [isWin, isLose]
   );
@@ -44,7 +53,10 @@ function PlayerCardHand({ isWin, isLose, isCurrent, score, hand, endGameLabel, b
       {hand.length ? (
         <div className={styles['player-hand']}>
           <div className={styles['player-cards']}>
-            <div className={scoreStyle}>{score}</div>
+            <div className={styles['player-score']}>
+              <div className={scoreStyle}>{score}</div>
+              {endGameLabel && <p className={labelStyle}>{endGameLabel}</p>}
+            </div>
             {hand.map((card, index) => (
               <Card
                 transformIndex={index}
@@ -53,12 +65,7 @@ function PlayerCardHand({ isWin, isLose, isCurrent, score, hand, endGameLabel, b
               />
             ))}
           </div>
-          <HandInfo
-            bet={bet}
-            endGameLabel={endGameLabel}
-            isWin={isWin}
-            isLose={isLose}
-          />
+          <HandInfo bet={bet} />
         </div>
       ) : (
         <div className={styles['cards']}>

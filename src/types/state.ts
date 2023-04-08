@@ -13,6 +13,7 @@ export type PlayerState = {
   isSplitted: boolean;
   totalWin: number | null;
   balance: number;
+  insuranceBet: number | null;
 };
 
 export type DealerState = {
