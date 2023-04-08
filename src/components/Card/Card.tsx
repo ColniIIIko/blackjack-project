@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Card as CardType } from '../../types/cards';
+import { ASSET_PATHS, BACK_URL } from '../../const';
 
 type Props = CardType & {
   transformIndex?: number;
@@ -7,13 +8,16 @@ type Props = CardType & {
 
 function Card({ isHidden, suit, value, transformIndex }: Props) {
   const style = { '--index': transformIndex } as React.CSSProperties;
+
+  const imageUrl = isHidden ? BACK_URL : ASSET_PATHS.find((url) => url.href.includes(`${suit}_${value}`))!;
+
   return (
     <img
       style={style}
-      src={`/src/assets/${isHidden ? 'back.svg' : `${suit}_${value}.svg`}`}
+      src={imageUrl.href}
       alt={isHidden ? 'back' : `${suit} ${value}`}
     />
   );
 }
 
-export default Card;
+export default memo(Card);

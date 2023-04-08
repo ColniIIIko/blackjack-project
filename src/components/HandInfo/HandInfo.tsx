@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bet } from '../../types/general';
+import { CHIP_URL } from '../../const';
 
 import styles from './handInfo.module.css';
 
@@ -12,7 +13,7 @@ function HandInfo({ bet }: Props) {
     <div className={styles['hand__stat']}>
       <div className={styles['hand__bet']}>
         <img
-          src='/src/assets/chip.svg'
+          src={CHIP_URL.href}
           alt='hand bet icon'
         />
         <span>{bet}</span>

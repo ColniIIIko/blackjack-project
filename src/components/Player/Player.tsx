@@ -2,6 +2,7 @@ import React from 'react';
 import PlayerCardHand from '../CardHand/PlayerCardHand';
 import { PlayerState } from '../../types/state';
 import { getEndGameLabel } from '../../utils/getPlayerEndGameLabel';
+import { CHIP_URL } from '../../const';
 
 import styles from './player.module.css';
 
@@ -34,7 +35,7 @@ function Player({ hand, isEnd, name, currentHand, insuranceBet }: Props) {
             <img
               height={'18px'}
               width={'18px'}
-              src='/src/assets/chip.svg'
+              src={CHIP_URL.href}
               alt='player bet icon'
             />
             <span>{insuranceBet}</span>

@@ -13,14 +13,14 @@ const preloadImage = (src: string): Promise<HTMLImageElement> => {
   });
 };
 
-export const useImagePreloader = (imageList: string[]) => {
+export const useImagePreloader = (imageList: URL[]) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const effect = async () => {
       const imagesPromiseList: Promise<HTMLImageElement>[] = [];
       for (const path of imageList) {
-        imagesPromiseList.push(preloadImage(path));
+        imagesPromiseList.push(preloadImage(path.href));
       }
 
       await Promise.all(imagesPromiseList);
