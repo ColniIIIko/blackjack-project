@@ -1,24 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FakeSocket } from '../mock/fakeSocket';
-import { Bet, PlayerChoice } from '../types/general';
+import { Bet, PlayerChoice, User } from '../types/general';
 import { DealerState, PlayerState } from '../types/state';
 
-const INITIAL_PLAYER_STATE: PlayerState = {
-  id: 'aaaa',
-  name: 'anonymous',
-  hand: [
-    {
-      id: '',
-      cards: [],
-      score: 0,
-      isBlackJack: false,
-      isBusted: false,
-      bet: 0,
-      result: null,
-    },
-  ],
+const INITIAL_PLAYER_STATE = {
+  hand: [],
   currentHand: {
-    id: 'asf',
+    id: '',
     cards: [],
     score: 0,
     isBlackJack: false,
@@ -28,7 +16,6 @@ const INITIAL_PLAYER_STATE: PlayerState = {
   },
   isSplitted: false,
   totalWin: null,
-  balance: 1000,
   insuranceBet: null,
 };
 
@@ -48,11 +35,11 @@ type States = {
   dealer: DealerState;
 };
 
-export const useBlackJackState = (socket: FakeSocket) => {
+export const useBlackJackState = (socket: FakeSocket, user: User) => {
   const [isChoosing, setIsChoosing] = useState(false);
   const [isBetting, setIsBetting] = useState(false);
   const [isInsurance, setIsInsurance] = useState(false);
-  const [playerState, setPlayerState] = useState<PlayerState>(INITIAL_PLAYER_STATE);
+  const [playerState, setPlayerState] = useState<PlayerState>({ ...INITIAL_PLAYER_STATE, ...user } as PlayerState);
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
   const [playerOptions, setPlayerOptions] = useState<PlayerChoice[]>([]);
   const [isGameEnd, setIsGameEnd] = useState(false);
@@ -122,19 +109,23 @@ export const useBlackJackState = (socket: FakeSocket) => {
 
     socket.on('end-game', (player: PlayerState) => {
       setIsGameEnd(true);
-      console.log('TOTAL WIN', player.totalWin);
       setPlayerState(player);
     });
+  }, [socket]);
 
+  useEffect(() => {
     socket.on('start-game', () => {
-      setPlayerState(INITIAL_PLAYER_STATE);
+      setPlayerState({ ...INITIAL_PLAYER_STATE, ...user } as PlayerState);
       setDealerState(INITIAL_DEALER_STATE);
       setIsGameEnd(false);
       setPlayerOptions([]);
     });
+  }, [socket, user]);
 
-    socket.emit('connect', { id: 'aaaa', name: 'anonymous', balance: 1000 });
-  }, [socket]);
+  useEffect(() => {
+    socket.emit('connect', user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     playerState,

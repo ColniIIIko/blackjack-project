@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Card as CardType } from '../../types/cards';
 import Card from '../Card/Card';
-import CardSkeleton from '../CardSkeleton/CardSkeleton';
 import HandInfo from '../HandInfo/HandInfo';
 import { Bet } from '../../types/general';
 import classNames from 'classnames';
@@ -50,29 +49,22 @@ function PlayerCardHand({ isWin, isLose, isCurrent, score, hand, endGameLabel, b
 
   return (
     <div className={handStyle}>
-      {hand.length ? (
-        <div className={styles['player-hand']}>
-          <div className={styles['player-cards']}>
-            <div className={styles['player-score']}>
-              <div className={scoreStyle}>{score}</div>
-              {endGameLabel && <p className={labelStyle}>{endGameLabel}</p>}
-            </div>
-            {hand.map((card, index) => (
-              <Card
-                transformIndex={index}
-                key={`$${card.suit}_${card.value}_${index}`}
-                {...card}
-              />
-            ))}
+      <div className={styles['player-hand']}>
+        <div className={styles['player-cards']}>
+          <div className={styles['player-score']}>
+            <div className={scoreStyle}>{score}</div>
+            {endGameLabel && <p className={labelStyle}>{endGameLabel}</p>}
           </div>
-          <HandInfo bet={bet} />
+          {hand.map((card, index) => (
+            <Card
+              transformIndex={index}
+              key={`$${card.suit}_${card.value}_${index}`}
+              {...card}
+            />
+          ))}
         </div>
-      ) : (
-        <div className={styles['cards']}>
-          <CardSkeleton />
-          <CardSkeleton />
-        </div>
-      )}
+        <HandInfo bet={bet} />
+      </div>
     </div>
   );
 }

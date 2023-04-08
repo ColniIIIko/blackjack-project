@@ -14,6 +14,12 @@
     column-gap: 5rem;
 }
 
+.cards{
+    display: flex;
+    column-gap: 0.4rem;
+}
+
+
 .player-name{
     font-size: 1.4rem;
 }

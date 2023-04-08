@@ -63,6 +63,7 @@ export class FakeSocket {
 
     this.on('player-bet', (bet: Bet) => {
       const player = this.handlePlayerBet(bet);
+      this.player!.balance -= bet;
       //TODO: here should be check for player current balance or not?
       this.execWithDelay(() => {
         this.emit('player-bet-accepted', player);
@@ -71,15 +72,15 @@ export class FakeSocket {
 
     this.on('player-bet-accepted', () => {
       const states = this.drawInitialCards();
+      console.log('bet-accepted', this.player!.balance);
       this.execWithDelay(() => {
         this.emit('initial-cards', states);
       }, 500);
     });
 
-    //after drawing initial cards we are giving player a little time before
-    //decision phase
     this.on('initial-cards', () => {
       this.execWithDelay(() => {
+        console.log('initial-cards', this.player!.balance);
         if (this.player!.currentHand.isBlackJack) {
           this.emit('player-decision', 'stand');
         } else if (this.dealer.hand.cards[0].value === 'A') {
@@ -95,8 +96,11 @@ export class FakeSocket {
     });
 
     this.on('player-insurance', (decision: boolean) => {
-      if (decision) {
-        this.player!.insuranceBet = this.player!.hand[0].bet * 0.5;
+      const insuranceBet = this.player!.currentHand.bet * 0.5;
+      if (this.player!.balance >= insuranceBet && decision) {
+        this.player!.balance -= insuranceBet;
+        this.player!.insuranceBet = insuranceBet;
+        this.emit('player-update', this.player?.toJSON());
       }
 
       this.execWithDelay(() => {
@@ -240,6 +244,7 @@ export class FakeSocket {
   }
 
   private handlePlayerDoubleDown() {
+    this.player!.balance -= this.player!.currentHand.bet;
     this.player!.currentHand.bet *= 2;
     const playerResponse = this.drawPlayerCard();
     this.emit('player-draw', playerResponse);
@@ -256,7 +261,8 @@ export class FakeSocket {
   }
 
   private handlePlayerSplit() {
-    if (this.player!.splitHand()) {
+    if (this.player!.balance >= this.player!.currentHand.bet && this.player!.splitHand()) {
+      this.player!.balance -= this.player!.currentHand.bet;
       this.emit('player-draw', this.player?.toJSON());
       this.execWithDelay(() => {
         this.player!.hand[0].cards.push(this.deck.drawCard(false)!);

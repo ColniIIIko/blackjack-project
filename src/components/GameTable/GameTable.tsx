@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useBlackJackState } from '../../hooks/useBlackJackState';
 import { socket } from '../../mock/fakeSocket';
 import BetChoice from '../BetChoice/BetChoice';
@@ -6,11 +6,14 @@ import Dealer from '../Dealer/Dealer';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import Player from '../Player/Player';
 import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
+import InsuranceOptionChoice from '../InsuranceOptionChoice/InsuranceOptionChoice';
+import { UserContext } from '../../stores/UserStore/UserStore';
+import { observer } from 'mobx-react-lite';
 
 import styles from './gameTable.module.css';
-import InsuranceOptionChoice from '../InsuranceOptionChoice/InsuranceOptionChoice';
 
-function GameTable() {
+const GameTable = observer(function () {
+  const user = useContext(UserContext)!;
   const {
     playerState,
     dealerState,
@@ -22,7 +25,18 @@ function GameTable() {
     handleInsurance,
     handleDecision,
     handleBet,
-  } = useBlackJackState(socket);
+  } = useBlackJackState(socket, user);
+
+  useEffect(() => {
+    user.changeBalance(playerState.balance);
+  }, [playerState.balance, user]);
+
+  useEffect(() => {
+    if (playerState.totalWin) {
+      user.increaseBalance(playerState.totalWin);
+    }
+  }, [playerState.totalWin, user]);
+
   return (
     <main className={styles['table']}>
       <ModalWindow isVisible={isChoosing}>
@@ -48,6 +62,6 @@ function GameTable() {
       <Dealer {...dealerState} />
     </main>
   );
-}
+});
 
 export default GameTable;
