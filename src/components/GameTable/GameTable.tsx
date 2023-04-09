@@ -48,7 +48,7 @@ const GameTable = observer(function () {
       </ModalWindow>
       <ModalWindow isVisible={isBetting}>
         <BetChoice
-          defaultBet={20}
+          defaultBet={user.previousBet || 20}
           onBet={(bet) => handleBet(bet)}
         />
       </ModalWindow>

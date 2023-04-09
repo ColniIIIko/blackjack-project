@@ -17,6 +17,10 @@ class UserStore implements User {
     this.balance += amount;
   }
 
+  setPreviousBet(bet: Bet) {
+    this.previousBet = bet;
+  }
+
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
   }
