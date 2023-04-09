@@ -74,10 +74,3 @@
     flex-direction: column;
     row-gap: 0.5rem;
 }
-
-.player-cards > img{
-    top: 0;
-    left: 0;
-    position: absolute;
-    transform: translate(calc(var(--index)*2.2rem),calc(-1*var(--index)*2.2rem));
-}

@@ -57,6 +57,7 @@ function PlayerCardHand({ isWin, isLose, isCurrent, score, hand, endGameLabel, b
           </div>
           {hand.map((card, index) => (
             <Card
+              isDealerCard={false}
               transformIndex={index}
               key={`$${card.suit}_${card.value}_${index}`}
               {...card}
