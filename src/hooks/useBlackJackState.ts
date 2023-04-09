@@ -39,6 +39,7 @@ export const useBlackJackState = (socket: FakeSocket, user: User) => {
   const [isChoosing, setIsChoosing] = useState(false);
   const [isBetting, setIsBetting] = useState(false);
   const [isInsurance, setIsInsurance] = useState(false);
+  const [isSingle, setIsSingle] = useState(false);
   const [playerState, setPlayerState] = useState<PlayerState>({ ...INITIAL_PLAYER_STATE, ...user } as PlayerState);
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
   const [playerOptions, setPlayerOptions] = useState<PlayerChoice[]>([]);
@@ -114,7 +115,8 @@ export const useBlackJackState = (socket: FakeSocket, user: User) => {
   }, [socket]);
 
   useEffect(() => {
-    socket.on('start-game', (player: PlayerState) => {
+    socket.on('start-game', (player: PlayerState, isSingle: boolean) => {
+      setIsSingle(isSingle);
       setPlayerState(player);
       setDealerState(INITIAL_DEALER_STATE);
       setIsGameEnd(false);
@@ -134,6 +136,7 @@ export const useBlackJackState = (socket: FakeSocket, user: User) => {
     isBetting,
     isInsurance,
     isGameEnd,
+    isSingle,
     playerOptions,
     handleBet,
     handleDecision,

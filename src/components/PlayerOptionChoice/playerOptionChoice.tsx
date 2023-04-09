@@ -8,13 +8,14 @@ type Props = {
   choices: PlayerChoice[];
   defaultChoice: PlayerChoice;
   onChoice: (choice: PlayerChoice) => void;
+  isTimerOn: boolean;
 };
 
 const OPTIONS: PlayerChoice[] = ['double down', 'hit', 'stand', 'split'];
 const OPTIONS_SINGS = ['2X', '+', '-', '<>'];
 const START_TIME = 15;
 
-function PlayerOptionChoice({ choices, defaultChoice, onChoice }: Props) {
+function PlayerOptionChoice({ choices, defaultChoice, isTimerOn, onChoice }: Props) {
   const [currentChoice, setCurrentChoice] = useState<PlayerChoice>(defaultChoice);
   return (
     <div className={styles['window']}>
@@ -40,10 +41,12 @@ function PlayerOptionChoice({ choices, defaultChoice, onChoice }: Props) {
           </div>
         ))}
       </div>
-      <Timer
-        startTime={START_TIME}
-        onTimerEnd={() => onChoice(currentChoice)}
-      />
+      {isTimerOn && (
+        <Timer
+          startTime={START_TIME}
+          onTimerEnd={() => onChoice(currentChoice)}
+        />
+      )}
     </div>
   );
 }

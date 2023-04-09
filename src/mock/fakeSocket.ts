@@ -148,7 +148,7 @@ export class FakeSocket {
 
   private startGame() {
     this.gameReset();
-    this.emit('start-game', this.player!.toJSON());
+    this.emit('start-game', this.player!.toJSON(), this.isSingle);
     this.execWithDelay(() => {
       this.emit('make-bet');
     }, 500);

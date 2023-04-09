@@ -8,12 +8,13 @@ import { UserContext } from '../../stores/UserStore/UserStore';
 type Props = {
   onBet: (bet: Bet) => void;
   defaultBet: Bet;
+  isTimerOn: boolean;
 };
 
 const BET_OPTIONS: Bet[] = [20, 25, 50, 100, 200];
 const START_TIME = 30;
 
-function BetChoice({ onBet, defaultBet }: Props) {
+function BetChoice({ onBet, defaultBet, isTimerOn }: Props) {
   const { setPreviousBet } = useContext(UserContext)!;
   const [currentBet, setCurrentBet] = useState<Bet>(defaultBet);
 
@@ -37,10 +38,12 @@ function BetChoice({ onBet, defaultBet }: Props) {
           </div>
         ))}
       </div>
-      <Timer
-        startTime={START_TIME}
-        onTimerEnd={() => onBet(currentBet)}
-      />
+      {isTimerOn && (
+        <Timer
+          startTime={START_TIME}
+          onTimerEnd={() => onBet(currentBet)}
+        />
+      )}
     </div>
   );
 }

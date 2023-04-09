@@ -5,11 +5,12 @@ import styles from './insuranceOptionChoice.module.css';
 
 type Props = {
   onChoice: (choice: boolean) => void;
+  isTimerOn: boolean;
 };
 
 const START_TIME = 5;
 
-function InsuranceOptionChoice({ onChoice }: Props) {
+function InsuranceOptionChoice({ onChoice, isTimerOn }: Props) {
   const [currentChoice, setCurrentChoice] = useState(false);
 
   return (
@@ -31,10 +32,12 @@ function InsuranceOptionChoice({ onChoice }: Props) {
           no
         </div>
       </div>
-      <Timer
-        startTime={START_TIME}
-        onTimerEnd={() => onChoice(currentChoice)}
-      />
+      {isTimerOn && (
+        <Timer
+          startTime={START_TIME}
+          onTimerEnd={() => onChoice(currentChoice)}
+        />
+      )}
     </div>
   );
 }

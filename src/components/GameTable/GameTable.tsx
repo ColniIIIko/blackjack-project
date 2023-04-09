@@ -22,6 +22,7 @@ const GameTable = observer(function () {
     isInsurance,
     playerOptions,
     isGameEnd,
+    isSingle,
     handleInsurance,
     handleDecision,
     handleBet,
@@ -38,16 +39,21 @@ const GameTable = observer(function () {
           onChoice={(choice) => handleDecision(choice)}
           defaultChoice='stand'
           choices={playerOptions}
+          isTimerOn={!isSingle}
         />
       </ModalWindow>
       <ModalWindow isVisible={isBetting}>
         <BetChoice
           defaultBet={user.previousBet || 20}
           onBet={(bet) => handleBet(bet)}
+          isTimerOn={!isSingle}
         />
       </ModalWindow>
       <ModalWindow isVisible={isInsurance}>
-        <InsuranceOptionChoice onChoice={(choice) => handleInsurance(choice)} />
+        <InsuranceOptionChoice
+          onChoice={(choice) => handleInsurance(choice)}
+          isTimerOn={!isSingle}
+        />
       </ModalWindow>
       <Player
         {...playerState}
