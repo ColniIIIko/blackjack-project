@@ -31,12 +31,6 @@ const GameTable = observer(function () {
     user.changeBalance(playerState.balance);
   }, [playerState.balance, user]);
 
-  useEffect(() => {
-    if (playerState.totalWin) {
-      user.increaseBalance(playerState.totalWin);
-    }
-  }, [playerState.totalWin, user]);
-
   return (
     <main className={styles['table']}>
       <ModalWindow isVisible={isChoosing}>

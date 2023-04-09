@@ -114,8 +114,8 @@ export const useBlackJackState = (socket: FakeSocket, user: User) => {
   }, [socket]);
 
   useEffect(() => {
-    socket.on('start-game', () => {
-      setPlayerState({ ...INITIAL_PLAYER_STATE, ...user } as PlayerState);
+    socket.on('start-game', (player: PlayerState) => {
+      setPlayerState(player);
       setDealerState(INITIAL_DEALER_STATE);
       setIsGameEnd(false);
       setPlayerOptions([]);

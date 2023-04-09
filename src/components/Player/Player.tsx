@@ -15,7 +15,7 @@ function Player({ hand, isEnd, name, currentHand, insuranceBet }: Props) {
   return (
     <div className={styles['player']}>
       <div className={styles['player-hand']}>
-        {hand.length ? (
+        {hand.length && hand[0].cards.length ? (
           hand.map((hand) => (
             <div key={hand.id}>
               <PlayerCardHand

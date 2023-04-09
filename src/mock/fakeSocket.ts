@@ -54,25 +54,23 @@ export class FakeSocket {
 
     this.on('connect', (player: User) => {
       this.player = new BlackJackPlayer(player.id, player.name, player.balance);
-      this.emit('start-game');
-    });
-
-    this.on('start-game', () => {
       this.startGame();
     });
 
     this.on('player-bet', (bet: Bet) => {
-      const player = this.handlePlayerBet(bet);
+      this.handlePlayerBet(bet);
+      console.log('before', this.player?.toJSON());
       this.player!.balance -= bet;
       //TODO: here should be check for player current balance or not?
+      console.log(this.player?.toJSON());
+      console.log('after', this.player?.toJSON());
       this.execWithDelay(() => {
-        this.emit('player-bet-accepted', player);
+        this.emit('player-bet-accepted', this.player?.toJSON());
       }, 500);
     });
 
     this.on('player-bet-accepted', () => {
       const states = this.drawInitialCards();
-      console.log('bet-accepted', this.player!.balance);
       this.execWithDelay(() => {
         this.emit('initial-cards', states);
       }, 500);
@@ -80,7 +78,6 @@ export class FakeSocket {
 
     this.on('initial-cards', () => {
       this.execWithDelay(() => {
-        console.log('initial-cards', this.player!.balance);
         if (this.player!.currentHand.isBlackJack) {
           this.emit('player-decision', 'stand');
         } else if (this.dealer.hand.cards[0].value === 'A') {
@@ -130,7 +127,7 @@ export class FakeSocket {
 
     this.on('end-game', () => {
       this.execWithDelay(() => {
-        this.emit('start-game');
+        this.startGame();
       }, 2000);
     });
   }
@@ -151,6 +148,7 @@ export class FakeSocket {
 
   private startGame() {
     this.gameReset();
+    this.emit('start-game', this.player!.toJSON());
     this.execWithDelay(() => {
       this.emit('make-bet');
     }, 500);
@@ -303,6 +301,7 @@ export class FakeSocket {
         this.handleDealerPlay();
       } else {
         this.setGameResults(dealerResponse.hand);
+        this.player!.balance += this.player!.totalWin ?? 0;
         this.emit('end-game', this.player!.toJSON());
       }
     }, 600);
