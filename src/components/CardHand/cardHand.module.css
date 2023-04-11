@@ -1,0 +1,76 @@
+.card-hand{
+    position: relative;
+}
+
+.card-hand__current .score-box{ 
+    background-color: #FFF84E;
+}
+
+.end-game-label{
+    font-size: 1.2rem;
+}
+
+.end-game-label__lose{
+    color: #FEACAC;
+}
+
+.end-game-label__win{
+    color: #69B06C;
+}
+
+.hand__info{
+    align-self: center;
+    width: max-content;
+}
+
+.score{
+    position: relative;
+    right: -105%;
+    bottom: -5%;
+    width: max-content;
+}
+
+.player-score{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.2rem;
+    position: relative;
+    right: -75%;
+    bottom: -80%;
+}
+
+.score-box{
+    font-size: 1.2rem;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 2px;
+    width: 2.2rem;
+    padding: 0.4rem;
+    aspect-ratio: 1 / 1;
+}
+
+.card-hand .score-box__lose{
+    background-color: #FEACAC;
+}
+
+.card-hand .score-box__win{
+    background-color: #69B06C;
+}
+
+.cards{
+    display: flex;
+    column-gap: 0.4rem;
+}
+
+.player-cards{
+    width: 99px;
+    height: 140px;
+    position: relative;
+}
+
+.player-hand{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
