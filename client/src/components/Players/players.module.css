@@ -1,0 +1,7 @@
+.players{
+    position: absolute;
+    bottom: 5%;
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 5rem;
+}
