@@ -2,7 +2,7 @@ import { Card } from 'types/cards';
 import { cardSuits, cardValues } from '../const';
 
 export class CardDeck {
-  private deck: Card[] = [];
+  public deck: Card[] = [];
   constructor(decks: number) {
     this.fill(decks);
     this.shuffle();

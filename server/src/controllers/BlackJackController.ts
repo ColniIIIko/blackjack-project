@@ -96,10 +96,12 @@ class BlackJackController {
   }
 
   public setNextPlayer() {
-    this.currentPlayer!.isCurrent = false;
-    this.currentPlayerIndex += 1;
-    this.currentPlayer = this.activePlayers[this.currentPlayerIndex];
-    this.currentPlayer.isCurrent = true;
+    if (this.hasNextPlayer()) {
+      this.currentPlayer!.isCurrent = false;
+      this.currentPlayerIndex += 1;
+      this.currentPlayer = this.activePlayers[this.currentPlayerIndex];
+      this.currentPlayer.isCurrent = true;
+    }
   }
 
   public setGameResults() {
@@ -126,8 +128,6 @@ class BlackJackController {
 
       player.balance += player.totalWin ?? 0;
     });
-
-    console.log('setGameResults');
   }
 
   public removePlayerBySocketId(socketId: string) {
