@@ -55,66 +55,92 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
   );
 
   useEffect(() => {
-    socket.on('table-update', (players: PlayerState[]) => {
+    const onPlayers = (players: PlayerState[]) => {
       setPlayersState(players);
-    });
+    };
 
-    socket.on('table-initial-cards', (states: States) => {
+    const onInitialCards = (states: States) => {
       setPlayersState(states.players);
       setDealerState(states.dealer);
-    });
+    };
 
-    socket.on('table-make-bet', () => {
+    const onMakeBet = () => {
       setIsBetting(true);
-    });
+    };
 
-    socket.on('table-bet-accepted', (players: PlayerState[]) => {
-      setPlayersState(players);
-    });
-
-    socket.on('table-make-insurance', () => {
+    const onMakeInsurance = () => {
       setIsInsurance(true);
-    });
+    };
 
-    socket.on('make-decision', (possibleChoices: PlayerChoice[]) => {
+    const onMakeDecision = (possibleChoices: PlayerChoice[]) => {
       setPlayerOptions(possibleChoices);
       setIsChoosing(true);
-    });
+    };
 
-    socket.on('table-player-draw', (players: PlayerState[]) => {
-      setPlayersState(players);
-    });
-
-    socket.on('table-next-hand', (players: PlayerState[]) => {
-      setPlayersState(players);
-    });
-
-    socket.on('table-dealer-draw', (dealer: DealerState) => {
+    const onDealerDraw = (dealer: DealerState) => {
       setDealerState(dealer);
-    });
+    };
 
-    socket.on('table-end-game', (players: PlayerState[]) => {
+    const onGameEnd = (players: PlayerState[]) => {
       setIsGameEnd(true);
       setPlayersState(players);
-    });
+    };
 
-    socket.on('table-next-player', (players: PlayerState[]) => {
-      setPlayersState(players);
-    });
+    socket.on('table-update', onPlayers);
+    socket.on('table-next-player', onPlayers);
+    socket.on('table-join', onPlayers);
+    socket.on('table-bet-accepted', onPlayers);
+    socket.on('table-player-draw', onPlayers);
+    socket.on('table-next-hand', onPlayers);
 
-    socket.on('table-join', (players: PlayerState[]) => {
-      setPlayersState(players);
-    });
+    socket.on('table-initial-cards', onInitialCards);
+
+    socket.on('table-make-bet', onMakeBet);
+
+    socket.on('table-make-insurance', onMakeInsurance);
+
+    socket.on('make-decision', onMakeDecision);
+
+    socket.on('table-dealer-draw', onDealerDraw);
+
+    socket.on('table-end-game', onGameEnd);
+
+    return () => {
+      socket.off('table-update', onPlayers);
+      socket.off('table-next-player', onPlayers);
+      socket.off('table-join', onPlayers);
+      socket.off('table-bet-accepted', onPlayers);
+      socket.off('table-player-draw', onPlayers);
+      socket.off('table-next-hand', onPlayers);
+
+      socket.off('table-initial-cards', onInitialCards);
+
+      socket.off('table-make-bet', onMakeBet);
+
+      socket.off('table-make-insurance', onMakeInsurance);
+
+      socket.off('make-decision', onMakeDecision);
+
+      socket.off('table-dealer-draw', onDealerDraw);
+
+      socket.off('table-end-game', onGameEnd);
+    };
   }, [socket]);
 
   useEffect(() => {
-    socket.on('table-start-game', (players: PlayerState[], isSingle: boolean) => {
+    const onGameStart = (players: PlayerState[], isSingle: boolean) => {
       setIsSingle(isSingle);
       setPlayersState(players);
       setDealerState(INITIAL_DEALER_STATE);
       setIsGameEnd(false);
       setPlayerOptions([]);
-    });
+    };
+
+    socket.on('table-start-game', onGameStart);
+
+    return () => {
+      socket.off('table-start-game', onGameStart);
+    };
   }, [socket, user]);
 
   useEffect(() => {

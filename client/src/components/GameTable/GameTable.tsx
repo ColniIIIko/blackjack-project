@@ -11,6 +11,7 @@ import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
 import Players from '../Players/Players';
 
 import styles from './gameTable.module.css';
+import { PlayerState } from '../../types/state';
 
 const GameTable = observer(function () {
   const user = useContext(UserContext)!;
@@ -29,9 +30,15 @@ const GameTable = observer(function () {
   } = useBlackJackState(socket, user);
 
   useEffect(() => {
-    socket.on('player-balance-update', (player) => {
+    const onBalanceUpdate = (player: PlayerState) => {
       user.changeBalance(player.balance);
-    });
+    };
+
+    socket.on('player-balance-update', onBalanceUpdate);
+
+    return () => {
+      socket.off('player-balance-update', onBalanceUpdate);
+    };
   }, [user]);
 
   return (

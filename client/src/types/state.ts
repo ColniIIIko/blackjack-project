@@ -15,6 +15,7 @@ export type PlayerState = {
   balance: number;
   insuranceBet: number | null;
   isActive: boolean;
+  isCurrent: boolean;
 };
 
 export type DealerState = {
