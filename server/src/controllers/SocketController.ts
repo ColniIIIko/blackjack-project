@@ -2,6 +2,7 @@ import { Socket, Server } from 'socket.io';
 import bjController from './BlackJackController';
 import { ClientToServerEvents, ServerToClientEvents } from '../types/socket';
 import { Bet, GameStatus, PlayerChoice, User } from '../types/general';
+import { PlayerState } from 'types/state';
 
 export class SocketController {
   private io: Server<ClientToServerEvents, ServerToClientEvents>;
@@ -39,16 +40,10 @@ export class SocketController {
     });
 
     socket.on('player-insurance', (decision: boolean) => {
-      const player = bjController.getBySocketId(socket.id);
-
-      if (!player) return;
-
       bjController.insuranceCount += 1;
 
       if (decision) {
-        const insuranceBet = player!.currentHand.bet * 0.5;
-        player.balance -= insuranceBet;
-        player.insuranceBet = insuranceBet;
+        bjController.handlePlayerInsurance(socket.id);
         this.io.emit('table-update', bjController.playersToJSON());
       }
 
@@ -187,8 +182,7 @@ export class SocketController {
   }
 
   private handlePlayerDoubleDown() {
-    bjController.currentPlayer!.balance -= bjController.currentPlayer!.currentHand.bet;
-    bjController.currentPlayer!.currentHand.bet *= 2;
+    bjController.handlePlayerDoubleDown();
     const socket = this.sockets[bjController.currentPlayer!.socketId];
     socket.emit('player-balance-update', bjController.currentPlayer!.toJSON());
     bjController.drawPlayerCard();
@@ -205,11 +199,7 @@ export class SocketController {
   }
 
   private handlePlayerSplit() {
-    if (
-      bjController.currentPlayer!.balance >= bjController.currentPlayer!.currentHand.bet &&
-      bjController.currentPlayer!.splitHand()
-    ) {
-      bjController.currentPlayer!.balance -= bjController.currentPlayer!.currentHand.bet;
+    if (bjController.currentPlayer!.splitHand()) {
       const socket = this.sockets[bjController.currentPlayer!.socketId];
       socket.emit('player-balance-update', bjController.currentPlayer!.toJSON());
       this.io.emit('table-player-draw', bjController.playersToJSON());

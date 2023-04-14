@@ -36,6 +36,7 @@ export class BlackJackPlayer implements Player {
   public splitHand() {
     if (this.hand.length === 0 || this.isSplitted || !this.hand[0].isSplitPossible) return false;
 
+    this.balance -= this.currentHand.bet;
     const card = this.hand[0].cards.pop()!;
     const splittedHand = new BlackJackPlayerHand([card]);
     splittedHand.bet = this.hand[0].bet;

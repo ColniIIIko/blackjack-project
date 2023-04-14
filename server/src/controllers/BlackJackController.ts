@@ -62,6 +62,21 @@ class BlackJackController {
     }
   }
 
+  public handlePlayerDoubleDown() {
+    this.currentPlayer!.balance -= this.currentPlayer!.currentHand.bet;
+    this.currentPlayer!.currentHand.bet *= 2;
+  }
+
+  public handlePlayerInsurance(socketId: string) {
+    const player = this.getBySocketId(socketId);
+    if (!player) return;
+
+    this.insuranceCount += 1;
+    const insuranceBet = player!.currentHand.bet * 0.5;
+    player.balance -= insuranceBet;
+    player.insuranceBet = insuranceBet;
+  }
+
   public getBySocketId(socketId: string) {
     return this.players.find((player) => player.socketId === socketId);
   }
