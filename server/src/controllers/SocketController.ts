@@ -2,7 +2,6 @@ import { Socket, Server } from 'socket.io';
 import bjController from './BlackJackController';
 import { ClientToServerEvents, ServerToClientEvents } from '../types/socket';
 import { Bet, GameStatus, PlayerChoice, User } from '../types/general';
-import { PlayerState } from 'types/state';
 
 export class SocketController {
   private io: Server<ClientToServerEvents, ServerToClientEvents>;
@@ -194,7 +193,9 @@ export class SocketController {
     } else if (bjController.hasNextPlayer()) {
       this.handleNextPlayer();
     } else {
-      this.handleEndGame();
+      this.execWithDelay(() => {
+        this.handleEndGame();
+      }, 1000);
     }
   }
 
@@ -249,7 +250,7 @@ export class SocketController {
       } else {
         this.handleEndGame();
       }
-    }, 600);
+    }, 1000);
   }
 
   private execWithDelay(callback: () => void, delay: number) {
