@@ -88,11 +88,11 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
 
     socket.on('table-update', onPlayers);
     socket.on('table-next-player', onPlayers);
-    socket.on('table-join', onPlayers);
     socket.on('table-bet-accepted', onPlayers);
     socket.on('table-player-draw', onPlayers);
     socket.on('table-next-hand', onPlayers);
 
+    socket.on('table-join', onInitialCards);
     socket.on('table-initial-cards', onInitialCards);
 
     socket.on('table-make-bet', onMakeBet);
@@ -108,11 +108,11 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
     return () => {
       socket.off('table-update', onPlayers);
       socket.off('table-next-player', onPlayers);
-      socket.off('table-join', onPlayers);
       socket.off('table-bet-accepted', onPlayers);
       socket.off('table-player-draw', onPlayers);
       socket.off('table-next-hand', onPlayers);
 
+      socket.off('table-join', onInitialCards);
       socket.off('table-initial-cards', onInitialCards);
 
       socket.off('table-make-bet', onMakeBet);

@@ -8,7 +8,7 @@ export type States = {
 
 export interface ServerToClientEvents {
   'table-bet-accepted': (players: PlayerState[]) => void;
-  'table-join': (players: PlayerState[]) => void;
+  'table-join': (states: States) => void;
   'table-update': (player: PlayerState[]) => void;
   'table-initial-cards': (states: States) => void;
   'table-make-bet': () => void;

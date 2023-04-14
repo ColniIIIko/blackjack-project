@@ -105,6 +105,7 @@ class BlackJackController {
   }
 
   public setGameResults() {
+    this.currentPlayer = null;
     this.players.forEach((player) => {
       player.hand.forEach((hand) => {
         if (player.totalWin === null) player.totalWin = 0;
