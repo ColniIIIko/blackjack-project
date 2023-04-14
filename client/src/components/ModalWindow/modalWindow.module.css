@@ -12,3 +12,37 @@
     justify-content: center;
     align-items: center;
 }
+
+.modal-wrapper > div{
+    animation: 0.2s ease-in fade-in-window ,0.15s cubic-bezier(0.445, 0.05, 0.55, 0.95) 0.2s pop-up ;
+}
+
+@keyframes fade-in-window{
+    0%{
+        opacity: 0.1;
+        transform: translateY(10%);
+    }
+
+    60%{
+        opacity: 1;
+    }
+
+    100%{
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes pop-up{
+    0%{
+        transform: scale(1);
+    }
+
+    60%{
+        transform: scale(1.05);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
