@@ -17,10 +17,11 @@ export class SocketController {
 
     socket.on('player-room-enter', (user: User) => {
       bjController.handleNewUser(user, socket.id);
-      this.io.emit('table-join', {
+      socket.emit('table-join', {
         players: bjController.playersToJSON(),
         dealer: bjController.dealer.toJSON(),
       });
+      socket.broadcast.emit('table-update', bjController.playersToJSON());
       if (bjController.activePlayerAmount === 1 && bjController.gameStatus !== GameStatus.PLAYING) {
         this.startGame();
       }
