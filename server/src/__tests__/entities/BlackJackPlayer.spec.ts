@@ -64,13 +64,16 @@ describe('BlackJackPlayer', () => {
         { value: '10', suit: 'spades', isHidden: false },
       ];
       const isSplitted = player.splitHand();
+      const balance = player.balance;
+      const bet = player.hand[0].bet;
 
       expect(isSplitted).toBe(true);
+      expect(player.balance).toEqual(balance - bet);
       expect(player.hand.length).toEqual(2);
       expect(player.isSplitted).toBe(true);
       expect(player.hand[0].cards.length).toEqual(1);
       expect(player.hand[1].cards.length).toEqual(1);
-      expect(player.hand[0].bet).toEqual(player.hand[1].bet);
+      expect(player.hand[1].bet).toEqual(bet);
     });
   });
 
