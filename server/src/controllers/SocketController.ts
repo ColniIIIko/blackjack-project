@@ -2,7 +2,6 @@ import { Socket, Server } from 'socket.io';
 import bjController from './BlackJackController';
 import { ClientToServerEvents, ServerToClientEvents } from '../types/socket';
 import { Bet, GameStatus, PlayerChoice, User } from '../types/general';
-import { log } from 'console';
 
 export class SocketController {
   private io: Server<ClientToServerEvents, ServerToClientEvents>;
@@ -31,7 +30,6 @@ export class SocketController {
       const player = bjController.getBySocketId(socket.id);
       socket.emit('player-balance-update', player!.toJSON());
       this.io.emit('table-bet-accepted', bjController.playersToJSON());
-      console.log(bjController.players);
       if (bjController.bettedPlayersAmount === bjController.activePlayerAmount) {
         this.handleInitialCard();
       }
@@ -122,9 +120,7 @@ export class SocketController {
     const states = bjController.drawInitialCards();
     this.io.emit('table-initial-cards', states);
     this.execWithDelay(() => {
-      if (bjController.currentPlayer!.currentHand.isBlackJack) {
-        this.handlePlayerStand();
-      } else if (bjController.dealer.hand.cards[0].value === 'A') {
+      if (bjController.dealer.hand.cards[0].value === 'A') {
         bjController.activePlayers.forEach((player) => {
           const socket = this.sockets[player.socketId];
           socket.emit('table-make-insurance');
@@ -136,6 +132,10 @@ export class SocketController {
   }
 
   private handleDecision() {
+    if (bjController.currentPlayer!.currentHand.isBlackJack) {
+      this.handlePlayerStand();
+      return;
+    }
     const possibleChoices: PlayerChoice[] = ['hit', 'stand'];
     if (bjController.currentPlayer!.hand.length === 1 && bjController.currentPlayer!.currentHand.isSplitPossible) {
       possibleChoices.push('split');
