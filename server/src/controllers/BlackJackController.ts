@@ -7,7 +7,7 @@ import { Bet, GameStatus, User } from '../types/general';
 
 const DEFAULT_NUMBER_OF_DECKS = 2;
 
-class BlackJackController {
+export class BlackJackController {
   public dealer: BlackJackDealer = new BlackJackDealer();
   public deck: CardDeck = new CardDeck(DEFAULT_NUMBER_OF_DECKS);
 
@@ -121,7 +121,7 @@ class BlackJackController {
 
   public setGameResults() {
     this.currentPlayer = null;
-    this.players.forEach((player) => {
+    this.activePlayers.forEach((player) => {
       player.hand.forEach((hand) => {
         if (player.totalWin === null) player.totalWin = 0;
         const playerWin = hand.bet * (hand.isBlackJack && !player.isSplitted ? 1.5 : 2);
@@ -159,7 +159,6 @@ class BlackJackController {
 
   public gameReset() {
     this.deck = new CardDeck(DEFAULT_NUMBER_OF_DECKS);
-    //this.player?.reset();
     this.players.forEach((player) => player.reset());
     this.dealer.reset();
     this.insuranceCount = 0;
