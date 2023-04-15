@@ -46,7 +46,6 @@ const GameTable = observer(function () {
       <ModalWindow isVisible={isChoosing}>
         <PlayerOptionChoice
           onChoice={(choice) => handleDecision(choice)}
-          defaultChoice='stand'
           choices={playerOptions}
           isTimerOn={!isSingle}
         />

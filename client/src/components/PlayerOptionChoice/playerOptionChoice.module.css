@@ -52,10 +52,6 @@
     top: 1rem;
 }
 
-.option_active{
-    border: 1px solid #FFFFFF;
-}
-
 .option_disabled > .option{
     background: rgba(255, 255, 255, 0.2);
 }

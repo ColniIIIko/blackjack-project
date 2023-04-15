@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Timer from '../Timer/Timer';
 
 import styles from './insuranceOptionChoice.module.css';
@@ -11,23 +11,19 @@ type Props = {
 const START_TIME = 5;
 
 function InsuranceOptionChoice({ onChoice, isTimerOn }: Props) {
-  const [currentChoice, setCurrentChoice] = useState(false);
-
   return (
     <div className={styles['window']}>
       <h2 className={styles['heading']}>INSURANCE?</h2>
       <div className={styles['options']}>
         <div
-          className={`${styles['option']} ${currentChoice ? styles['option_active'] : ''}`}
-          onClick={() => setCurrentChoice(true)}
-          onDoubleClick={() => onChoice(currentChoice)}
+          className={styles['option']}
+          onClick={() => onChoice(true)}
         >
           yes
         </div>
         <div
-          className={`${styles['option']} ${!currentChoice ? styles['option_active'] : ''}`}
-          onClick={() => setCurrentChoice(false)}
-          onDoubleClick={() => onChoice(currentChoice)}
+          className={styles['option']}
+          onClick={() => onChoice(false)}
         >
           no
         </div>
@@ -35,7 +31,7 @@ function InsuranceOptionChoice({ onChoice, isTimerOn }: Props) {
       {isTimerOn && (
         <Timer
           startTime={START_TIME}
-          onTimerEnd={() => onChoice(currentChoice)}
+          onTimerEnd={() => onChoice(false)}
         />
       )}
     </div>

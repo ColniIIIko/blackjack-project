@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PlayerChoice } from '../../types/general';
 import Timer from '../Timer/Timer';
 
@@ -6,7 +6,6 @@ import styles from './playerOptionChoice.module.css';
 
 type Props = {
   choices: PlayerChoice[];
-  defaultChoice: PlayerChoice;
   onChoice: (choice: PlayerChoice) => void;
   isTimerOn: boolean;
 };
@@ -15,8 +14,7 @@ const OPTIONS: PlayerChoice[] = ['double down', 'hit', 'stand', 'split'];
 const OPTIONS_SINGS = ['2X', '+', '-', '<>'];
 const START_TIME = 15;
 
-function PlayerOptionChoice({ choices, defaultChoice, isTimerOn, onChoice }: Props) {
-  const [currentChoice, setCurrentChoice] = useState<PlayerChoice>(defaultChoice);
+function PlayerOptionChoice({ choices, isTimerOn, onChoice }: Props) {
   return (
     <div className={styles['window']}>
       <h2 className={styles['heading']}>MAKE YOUR DECISION</h2>
@@ -28,9 +26,8 @@ function PlayerOptionChoice({ choices, defaultChoice, isTimerOn, onChoice }: Pro
           >
             {choices.includes(opt) ? (
               <div
-                className={`${styles['option']} ${currentChoice === opt ? styles['option_active'] : ''}`}
-                onClick={() => setCurrentChoice(opt)}
-                onDoubleClick={() => onChoice(currentChoice)}
+                className={styles['option']}
+                onClick={() => onChoice(opt)}
               >
                 {OPTIONS_SINGS[index]}
               </div>
@@ -44,7 +41,7 @@ function PlayerOptionChoice({ choices, defaultChoice, isTimerOn, onChoice }: Pro
       {isTimerOn && (
         <Timer
           startTime={START_TIME}
-          onTimerEnd={() => onChoice(currentChoice)}
+          onTimerEnd={() => onChoice('stand')}
         />
       )}
     </div>
