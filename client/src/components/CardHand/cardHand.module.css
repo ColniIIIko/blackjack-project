@@ -90,3 +90,22 @@
     flex-direction: column;
     row-gap: 0.5rem;
 }
+
+@media screen and (max-width: 670px) {
+    .player-score{
+        bottom: -75%;
+    }
+
+    .score-box{
+        width: 2.1rem;
+    }
+
+    .player-cards{
+        width: 71px;
+        height: 100px;
+    }
+
+    .card{
+        column-gap: 0.1rem;
+    }
+}

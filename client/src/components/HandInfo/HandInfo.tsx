@@ -13,6 +13,7 @@ function HandInfo({ bet }: Props) {
     <div className={styles['hand__stat']}>
       <div className={styles['hand__bet']}>
         <img
+          className={styles['hand__bet-ico']}
           src={CHIP_URL.href}
           alt='hand bet icon'
         />

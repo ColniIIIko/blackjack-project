@@ -2,7 +2,7 @@
     display: flex;
     position: relative;
     justify-content: center;
-    height: 100%;
+    height: calc(100% - 6rem);
 }
 
 .win-label{

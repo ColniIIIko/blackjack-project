@@ -1,8 +1,8 @@
 import React from 'react';
 import { PlayerState } from '../../types/state';
+import Player from '../Player/Player';
 
 import styles from './players.module.css';
-import Player from '../Player/Player';
 
 type Props = {
   players: PlayerState[];
@@ -10,8 +10,12 @@ type Props = {
 };
 
 function Players({ players, isEnd }: Props) {
+  const style = { '--length': players.length } as React.CSSProperties;
   return (
-    <div className={styles['players']}>
+    <div
+      className={styles['players']}
+      style={style}
+    >
       {players.map((player) => (
         <Player
           key={player.id}

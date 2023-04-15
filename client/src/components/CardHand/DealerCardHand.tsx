@@ -33,6 +33,7 @@ function DealerCardHand({ score, hand, isBusted }: Props) {
             {hand.map((card, index) => (
               <Card
                 isDealerCard={true}
+                transformIndex={index}
                 key={`$${card.suit}_${card.value}_${index}`}
                 {...card}
               />

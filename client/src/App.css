@@ -4,6 +4,12 @@ html, body {
 
 #root {
   max-width: 1180px;
-  height: calc(100% - 6rem);
+  height: 100%;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 670px) {
+  html{
+    font-size: 14px;
+  }
 }

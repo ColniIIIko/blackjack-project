@@ -11,3 +11,15 @@
     font-size: 1.2rem;
     width: 150%;
 }
+
+.hand__bet-ico{
+    width: 27px;
+    height: 27px;
+}
+
+@media screen and (max-width: 670px) {
+    .hand__bet-ico{
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -12,6 +12,7 @@ const UserInfo = observer(function () {
       <p className={styles['user-name']}>{name}</p>
       <div className={styles['balance']}>
         <img
+          className={styles['chip-ico']}
           src={CHIP_URL.href}
           alt='bet chip'
         />

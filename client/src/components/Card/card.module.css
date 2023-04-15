@@ -8,9 +8,23 @@
     animation-fill-mode: forwards;
 }
 
+@media screen and (max-width: 670px) {
+  :where(.player-card, .dealer-card) > img{
+    width: 71px;
+    height: 100px;
+  }
+}
+
 .dealer-card{
+  opacity: 0;
   animation: fade-in 0.3s;
   animation-timing-function: ease-in;
+  animation-delay: 0.1s;
+  animation-fill-mode: forwards;
+}
+
+.dealer-card:nth-child(n+2){
+  margin-left: -40px;
 }
 
 @keyframes fade-in {
@@ -24,6 +38,7 @@
   }
 
   100%{
+    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -46,6 +61,6 @@
   
     100% {
       rotate: 360deg;
-      translate: calc(var(--offset)*2.2rem) calc(-1*var(--offset)*2.2rem);
+      translate: calc(var(--offset)*1.5rem) calc(-1*var(--offset)*2rem);
     }
   }
