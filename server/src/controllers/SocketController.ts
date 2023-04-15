@@ -76,6 +76,12 @@ export class SocketController {
       bjController.removePlayerBySocketId(socket.id);
       if (bjController.activePlayerAmount === 0) {
         bjController.gameStatus = GameStatus.IDLE;
+      } else if (bjController.currentPlayer?.socketId === socket.id) {
+        this.execWithDelay(() => {
+          this.handleDealerPlay();
+        }, 1000);
+      } else {
+        this.handleDecision();
       }
       this.io.emit('table-update', bjController.playersToJSON());
     });
@@ -160,7 +166,7 @@ export class SocketController {
       } else {
         this.handleDecision();
       }
-    }, 500);
+    }, 1000);
   }
 
   private handlePlayerDraw() {
@@ -177,7 +183,9 @@ export class SocketController {
         this.handleEndGame();
       }, 1000);
     } else {
-      this.handleDealerPlay();
+      this.execWithDelay(() => {
+        this.handleDealerPlay();
+      }, 1000);
     }
   }
 
@@ -221,7 +229,9 @@ export class SocketController {
     } else if (bjController.hasNextPlayer()) {
       this.handleNextPlayer();
     } else {
-      this.handleDealerPlay();
+      this.execWithDelay(() => {
+        this.handleDealerPlay();
+      }, 1000);
     }
   }
 

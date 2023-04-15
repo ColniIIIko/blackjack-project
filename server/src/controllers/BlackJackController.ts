@@ -149,11 +149,12 @@ export class BlackJackController {
   public removePlayerBySocketId(socketId: string) {
     const player = this.getBySocketId(socketId);
     if (player) {
-      if (this.currentPlayer!.id === player!.id && this.hasNextPlayer()) {
+      if (this.currentPlayer?.id === player?.id && this.hasNextPlayer()) {
         this.setNextPlayer();
       }
 
       this.players = this.players.filter((p) => p.id !== player.id);
+      this.currentPlayerIndex -= 1;
     }
   }
 
