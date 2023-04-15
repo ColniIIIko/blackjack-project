@@ -172,7 +172,7 @@ export class SocketController {
       this.handleNextHand();
     } else if (bjController.hasNextPlayer()) {
       this.handleNextPlayer();
-    } else if (bjController.activePlayerAmount === 1) {
+    } else if (bjController.activePlayerAmount === 1 && bjController.currentPlayer?.hand.length === 1) {
       this.execWithDelay(() => {
         this.handleEndGame();
       }, 1000);
