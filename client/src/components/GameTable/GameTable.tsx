@@ -12,6 +12,7 @@ import Players from '../Players/Players';
 
 import styles from './gameTable.module.css';
 import { PlayerState } from '../../types/state';
+import StartGameButton from '../StartGameButton/StartGameButton';
 
 const GameTable = observer(function () {
   const user = useContext(UserContext)!;
@@ -20,6 +21,7 @@ const GameTable = observer(function () {
     dealerState,
     isChoosing,
     isBetting,
+    isIdle,
     isInsurance,
     playerOptions,
     isGameEnd,
@@ -67,6 +69,7 @@ const GameTable = observer(function () {
         players={playersState}
         isEnd={isGameEnd}
       />
+      {isIdle && <StartGameButton />}
       <Dealer {...dealerState} />
     </main>
   );

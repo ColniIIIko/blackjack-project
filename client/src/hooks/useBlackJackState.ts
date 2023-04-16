@@ -25,6 +25,7 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
   const [isBetting, setIsBetting] = useState(false);
   const [isInsurance, setIsInsurance] = useState(false);
   const [isSingle, setIsSingle] = useState(false);
+  const [isIdle, setIsIdle] = useState(true);
   const [playersState, setPlayersState] = useState<PlayerState[]>([]);
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
   const [playerOptions, setPlayerOptions] = useState<PlayerChoice[]>([]);
@@ -64,6 +65,12 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
       setDealerState(states.dealer);
     };
 
+    const onJoin = (states: States) => {
+      setIsIdle(states.players.length === 1);
+      setPlayersState(states.players);
+      setDealerState(states.dealer);
+    };
+
     const onMakeBet = () => {
       setIsBetting(true);
     };
@@ -92,7 +99,8 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
     socket.on('table-player-draw', onPlayers);
     socket.on('table-next-hand', onPlayers);
 
-    socket.on('table-join', onInitialCards);
+    socket.on('table-join', onJoin);
+
     socket.on('table-initial-cards', onInitialCards);
 
     socket.on('table-make-bet', onMakeBet);
@@ -112,7 +120,8 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
       socket.off('table-player-draw', onPlayers);
       socket.off('table-next-hand', onPlayers);
 
-      socket.off('table-join', onInitialCards);
+      socket.off('table-join', onJoin);
+
       socket.off('table-initial-cards', onInitialCards);
 
       socket.off('table-make-bet', onMakeBet);
@@ -129,6 +138,7 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
 
   useEffect(() => {
     const onGameStart = (players: PlayerState[], isSingle: boolean) => {
+      setIsIdle(false);
       setIsSingle(isSingle);
       setPlayersState(players);
       setDealerState(INITIAL_DEALER_STATE);
@@ -151,6 +161,7 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
   return {
     playersState,
     dealerState,
+    isIdle,
     isChoosing,
     isBetting,
     isInsurance,

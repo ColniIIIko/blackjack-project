@@ -21,8 +21,15 @@ export class SocketController {
         players: bjController.playersToJSON(),
         dealer: bjController.dealer.toJSON(),
       });
+
       socket.broadcast.emit('table-update', bjController.playersToJSON());
-      if (bjController.activePlayerAmount === 1 && bjController.gameStatus !== GameStatus.PLAYING) {
+      if (bjController.activePlayerAmount > 1 && bjController.gameStatus === GameStatus.IDLE) {
+        this.startGame();
+      }
+    });
+
+    socket.on('player-game-start', () => {
+      if (bjController.gameStatus === GameStatus.IDLE) {
         this.startGame();
       }
     });
@@ -35,6 +42,7 @@ export class SocketController {
       socket.emit('player-balance-update', player!.toJSON());
       this.io.emit('table-bet-accepted', bjController.playersToJSON());
       if (bjController.bettedPlayersAmount === bjController.activePlayerAmount) {
+        bjController.gameStatus = GameStatus.PLAYING;
         this.handleInitialCard();
       }
     });
@@ -75,12 +83,13 @@ export class SocketController {
     socket.on('disconnect', () => {
       bjController.removePlayerBySocketId(socket.id);
       if (bjController.activePlayerAmount === 0) {
+        bjController.gameReset();
         bjController.gameStatus = GameStatus.IDLE;
       } else if (bjController.currentPlayer?.socketId === socket.id) {
         this.execWithDelay(() => {
           this.handleDealerPlay();
         }, 1000);
-      } else {
+      } else if (bjController.gameStatus === GameStatus.PLAYING) {
         this.handleDecision();
       }
       this.io.emit('table-update', bjController.playersToJSON());
@@ -89,7 +98,7 @@ export class SocketController {
 
   private startGame() {
     bjController.gameReset();
-    bjController.gameStatus = GameStatus.PLAYING;
+    bjController.gameStatus = GameStatus.BETTING;
     const isSingle = bjController.activePlayerAmount === 1;
     this.io.emit('table-start-game', bjController.playersToJSON(), isSingle);
     this.execWithDelay(() => {

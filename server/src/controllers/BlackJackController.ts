@@ -149,12 +149,12 @@ export class BlackJackController {
   public removePlayerBySocketId(socketId: string) {
     const player = this.getBySocketId(socketId);
     if (player) {
+      this.players = this.players.filter((p) => p.id !== player.id);
+
       if (this.currentPlayer?.id === player?.id && this.hasNextPlayer()) {
+        this.currentPlayerIndex -= 1;
         this.setNextPlayer();
       }
-
-      this.players = this.players.filter((p) => p.id !== player.id);
-      this.currentPlayerIndex -= 1;
     }
   }
 
@@ -164,8 +164,10 @@ export class BlackJackController {
     this.dealer.reset();
     this.insuranceCount = 0;
     this.currentPlayerIndex = 0;
-    this.currentPlayer = this.activePlayers[this.currentPlayerIndex];
-    this.currentPlayer.isCurrent = true;
+    if (this.activePlayerAmount > 0) {
+      this.currentPlayer = this.activePlayers[this.currentPlayerIndex];
+      this.currentPlayer.isCurrent = true;
+    }
   }
 
   private drawInitialPlayerCards(): [Card, Card] {

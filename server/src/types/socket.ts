@@ -24,6 +24,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
+  'player-game-start': () => void;
   'player-room-enter': (player: User) => void;
   'player-decision': (decision: PlayerChoice) => void;
   'player-bet': (bet: Bet) => void;
