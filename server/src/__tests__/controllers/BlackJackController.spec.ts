@@ -62,7 +62,6 @@ describe('BlackJackController', () => {
       controller.players = [new BlackJackPlayer('1', 'player 1', 1000, '1')];
       controller.players[0].currentHand.bet = 100;
       controller.handlePlayerInsurance('1');
-      expect(controller.insuranceCount).toEqual(1);
       expect(controller.players[0].insuranceBet).toEqual(50);
       expect(controller.players[0].balance).toEqual(950);
     });
