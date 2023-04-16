@@ -53,8 +53,9 @@ export class SocketController {
       if (decision) {
         bjController.handlePlayerInsurance(socket.id);
         this.io.emit('table-update', bjController.playersToJSON());
+        const player = bjController.getBySocketId(socket.id);
+        socket.emit('player-balance-update', player!.toJSON());
       }
-
       if (bjController.activePlayerAmount === bjController.insuranceCount) {
         this.handleInsurance();
       }

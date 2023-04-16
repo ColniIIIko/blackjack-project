@@ -71,7 +71,6 @@ export class BlackJackController {
     const player = this.getBySocketId(socketId);
     if (!player) return;
 
-    this.insuranceCount += 1;
     const insuranceBet = player!.currentHand.bet * 0.5;
     player.balance -= insuranceBet;
     player.insuranceBet = insuranceBet;
