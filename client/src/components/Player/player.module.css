@@ -22,6 +22,11 @@
     font-size: 1.4rem;
 }
 
+.player-me{
+    color: #dbd644;
+    text-shadow: 0 0 4px #dbd6444b;
+}
+
 .insurance-bet{
     display: flex;
     font-size: 0.8rem;

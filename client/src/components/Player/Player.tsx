@@ -2,8 +2,8 @@ import React from 'react';
 import PlayerCardHand from '../CardHand/PlayerCardHand';
 import { PlayerState } from '../../types/state';
 import { getEndGameLabel } from '../../utils/getPlayerEndGameLabel';
-import { CHIP_URL } from '../../const';
 import CardSkeleton from '../CardSkeleton/CardSkeleton';
+import PlayerInfo from './PlayerInfo';
 
 import styles from './player.module.css';
 
@@ -11,7 +11,7 @@ type Props = PlayerState & {
   isEnd: boolean;
 };
 
-function Player({ hand, isEnd, name, currentHand, insuranceBet, isCurrent }: Props) {
+function Player({ hand, isEnd, name, currentHand, insuranceBet, isCurrent, id }: Props) {
   return (
     <div className={styles['player']}>
       <div className={styles['player-hand']}>
@@ -36,20 +36,11 @@ function Player({ hand, isEnd, name, currentHand, insuranceBet, isCurrent }: Pro
           </div>
         )}
       </div>
-      <div className={styles['player-info']}>
-        <p className={styles['player-name']}>{name}</p>
-        {insuranceBet && (
-          <div className={styles['insurance-bet']}>
-            <img
-              height={'18px'}
-              width={'18px'}
-              src={CHIP_URL.href}
-              alt='player bet icon'
-            />
-            <span>{insuranceBet}</span>
-          </div>
-        )}
-      </div>
+      <PlayerInfo
+        id={id}
+        name={name}
+        insuranceBet={insuranceBet}
+      />
     </div>
   );
 }
