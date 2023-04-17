@@ -60,16 +60,10 @@
     cursor: pointer;
 }
 
-.timer{
-    border-radius: 50%;
-    border: 2px solid #FFFFFF;
-    font-size: 1rem;
-    line-height: 21px;
-    color: #FFFFFF;
-    background: #242424;
-    height: 2.5rem;
-    width: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.bet-annotation{
+    font-size: 0.8rem;
+    color: #808080;
+    position: absolute;
+    right: 1%;
+    bottom: 2%;
 }

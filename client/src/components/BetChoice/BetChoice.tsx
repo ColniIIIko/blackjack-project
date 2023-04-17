@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Bet } from '../../types/general';
 import Timer from '../Timer/Timer';
+import { UserContext } from '../../stores/UserStore/UserStore';
 
 import styles from './betChoice.module.css';
-import { UserContext } from '../../stores/UserStore/UserStore';
 
 type Props = {
   onBet: (bet: Bet) => void;
@@ -44,6 +44,7 @@ function BetChoice({ onBet, defaultBet, isTimerOn }: Props) {
           onTimerEnd={() => onBet(currentBet)}
         />
       )}
+      <span className={styles['bet-annotation']}>*Double click to confirm bet</span>
     </div>
   );
 }
