@@ -6,10 +6,12 @@ import { Bet, GameStatus, PlayerChoice, User } from '../types/general';
 export class SocketController {
   private io: Server<ClientToServerEvents, ServerToClientEvents>;
   private sockets: Record<string, Socket<ClientToServerEvents, ServerToClientEvents>>;
+  private currentTimer: NodeJS.Timeout | null;
 
   constructor(io: Server<ClientToServerEvents, ServerToClientEvents>) {
     this.io = io;
     this.sockets = {};
+    this.currentTimer = null;
   }
 
   public initSocket(socket: Socket<ClientToServerEvents, ServerToClientEvents>) {
@@ -84,8 +86,7 @@ export class SocketController {
     socket.on('disconnect', () => {
       bjController.removePlayerBySocketId(socket.id);
       if (bjController.activePlayerAmount === 0) {
-        bjController.gameReset();
-        bjController.gameStatus = GameStatus.IDLE;
+        this.clear();
       } else if (bjController.currentPlayer?.socketId === socket.id && bjController.gameStatus === GameStatus.PLAYING) {
         this.execWithDelay(() => {
           this.handleDealerPlay();
@@ -95,6 +96,15 @@ export class SocketController {
       }
       this.io.emit('table-update', bjController.playersToJSON());
     });
+  }
+
+  private clear() {
+    if (this.currentTimer) {
+      clearTimeout(this.currentTimer);
+    }
+
+    bjController.gameReset();
+    bjController.gameStatus = GameStatus.IDLE;
   }
 
   private startGame() {
@@ -275,7 +285,7 @@ export class SocketController {
   }
 
   private execWithDelay(callback: () => void, delay: number) {
-    setTimeout(() => {
+    this.currentTimer = setTimeout(() => {
       callback();
     }, delay);
   }

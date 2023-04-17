@@ -150,8 +150,8 @@ export class BlackJackController {
     if (player) {
       this.players = this.players.filter((p) => p.id !== player.id);
 
+      this.currentPlayerIndex -= 1;
       if (this.currentPlayer?.id === player?.id && this.hasNextPlayer()) {
-        this.currentPlayerIndex -= 1;
         this.setNextPlayer();
       }
     }
