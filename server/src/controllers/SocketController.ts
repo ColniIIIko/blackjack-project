@@ -86,7 +86,7 @@ export class SocketController {
       if (bjController.activePlayerAmount === 0) {
         bjController.gameReset();
         bjController.gameStatus = GameStatus.IDLE;
-      } else if (bjController.currentPlayer?.socketId === socket.id) {
+      } else if (bjController.currentPlayer?.socketId === socket.id && bjController.gameStatus === GameStatus.PLAYING) {
         this.execWithDelay(() => {
           this.handleDealerPlay();
         }, 1000);
