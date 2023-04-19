@@ -6,7 +6,7 @@ import { generateUsername } from 'unique-username-generator';
 
 class UserStore implements User {
   id: string = uuid();
-  name: string = generateUsername('', 0, Math.round(Math.random() * 16) + 1);
+  name: string = generateUsername('', 0, Math.round(Math.random() * 13) + 3);
   balance: number = 1000;
   previousBet: Bet | null = null;
 
