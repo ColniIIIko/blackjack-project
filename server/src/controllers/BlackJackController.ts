@@ -110,7 +110,7 @@ export class BlackJackController {
   }
 
   public setNextPlayer() {
-    if (this.hasNextPlayer()) {
+    if (this.currentPlayer && this.hasNextPlayer()) {
       this.currentPlayer!.isCurrent = false;
       this.currentPlayerIndex += 1;
       this.currentPlayer = this.activePlayers[this.currentPlayerIndex];
