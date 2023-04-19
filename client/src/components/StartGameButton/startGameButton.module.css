@@ -1,6 +1,6 @@
 .start-btn{
     height: max-content;
-    color: #FFF;
+    color: var(--font-color-primary);
     background: transparent;
     align-self: center;
     font-size: 2.5rem;

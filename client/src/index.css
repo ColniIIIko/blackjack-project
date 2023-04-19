@@ -12,11 +12,23 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --font-color-primary: #FFFFFF;
+  --font-color-dark: #000000;
+  --bg-color-primary: #1B1B1B;
+  --bg-color-secondary: #242424;
+  --bg-color-addition: #141414;
+  --bg-color-light: #FFFFFF;
+
+  --color-bust: #FEACAC;
+  --color-win: #69B06C;
+  --color-current: #FFF84E;
+
 }
 
 body{
   font-family: 'DM Sans', sans-serif;
   font-weight: 400;
-  color: #FFF;
-  background-color: #1B1B1B;
+  color: var(--font-color-primary);
+  background-color: var(--bg-color-primary);
 }

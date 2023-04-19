@@ -1,5 +1,8 @@
 .header{
-    padding: 0 0.5rem;
+    padding-top: env(safe-area-inset-top, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);;
+    padding-left: calc(0.5rem + env(safe-area-inset-left, 0));
+    padding-right: calc(0.5rem + env(safe-area-inset-right, 0));
     display: flex;
     justify-content: space-between;
     align-items: center;

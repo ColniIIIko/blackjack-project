@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #141414;
+    background: var(--bg-color-addition);
     border-radius: 6px;
     position: relative;
 }
@@ -12,7 +12,7 @@
     font-weight: 500;
     font-size: 1.2rem;
     line-height: 21px;
-    color: #FFFFFF;
+    color: var(--font-color-primary);
 }
  
 .options{
@@ -27,8 +27,8 @@
     border-radius: 50%;
     font-size: 1.5rem;
     line-height: 21px;
-    color: #FFFFFF;
-    background: #242424;
+    color: var(--font-color-primary);
+    background: var(--bg-color-secondary);
     height: 3.5rem;
     width: 3.5rem;
     display: flex;
@@ -38,5 +38,5 @@
 }
 
 .option_active{
-    border: 1px solid #FFFFFF;
+    border: 1px solid var(--font-color-primary);
 }

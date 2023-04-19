@@ -8,15 +8,15 @@
     font-size: 1.5rem;
     font-weight: 500;
     padding: 0.125rem 0.25rem;
-    color: #000000;
-    background: #FFFFFF;
+    color: var(--font-color-dark);
+    background: var(--bg-color-light);
 }
 
 .balance{
     display: flex;
     column-gap: 0.5rem;
     font-size: 1.2rem;
-    color: #FFFFFF;
+    color: var(--font-color-primary);
     align-items: center;
 }
 
