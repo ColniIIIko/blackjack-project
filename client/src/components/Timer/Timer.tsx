@@ -10,7 +10,14 @@ type Props = {
 
 function Timer({ startTime, onTimerEnd }: Props) {
   const timer = useCountDown(startTime, onTimerEnd);
-  return <div className={styles['timer']}>{timer}</div>;
+  return (
+    <div
+      className={styles['timer']}
+      data-test={'timer'}
+    >
+      {timer}
+    </div>
+  );
 }
 
 export default Timer;
