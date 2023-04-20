@@ -1,0 +1,35 @@
+.user-info{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.user-name{
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 0.125rem 0.25rem;
+    color: var(--font-color-dark);
+    background: var(--bg-color-light);
+    width: max-content;
+    align-self: flex-end;
+}
+
+.balance{
+    display: flex;
+    column-gap: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--font-color-primary);
+    align-items: center;
+}
+
+.chip-ico{
+    width: 27px;
+    height: 27px;
+}
+
+@media screen and (max-width: 670px) {
+    .chip-ico{
+        width: 20px;
+        height: 20px;
+    }
+}

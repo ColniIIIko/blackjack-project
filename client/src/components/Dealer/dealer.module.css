@@ -1,0 +1,12 @@
+.dealer{
+    position: absolute;
+    top: 5%;
+    text-align: center;
+}
+
+.bust-label{
+    padding-top: 0.2rem;
+    font-size: 1.5rem;
+    color: var(--color-bust);
+    text-align: center;
+}

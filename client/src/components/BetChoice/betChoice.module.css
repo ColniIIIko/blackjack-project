@@ -1,0 +1,69 @@
+.window{
+    padding: 1.5rem 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg-color-addition);
+    border-radius: 6px;
+    position: relative;
+}
+
+.heading{
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 21px;
+    color: var(--font-color-primary);
+}
+ 
+.options{
+    display: flex;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    padding: 1rem 0 2rem;
+}
+
+.option{
+    user-select: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    line-height: 21px;
+    color: var(--font-color-primary);
+    background: var(--bg-color-secondary);
+    height: 3.5rem;
+    width: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.option_active{
+    border: 1px solid var(--font-color-primary);
+}
+
+.bottom{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bet-button{
+    outline: none;
+    height: 1.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--font-color-primary);
+    padding: 0 10px;
+    border-radius: 4px;
+    background: #242424;
+    cursor: pointer;
+}
+
+.bet-annotation{
+    font-size: 0.8rem;
+    color: #808080;
+    position: absolute;
+    right: 1%;
+    bottom: 2%;
+}

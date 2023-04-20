@@ -1,0 +1,13 @@
+.card-skeleton{
+    width: 99px;
+    height: 140px;
+    border: 2px solid #808080;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 670px) {
+    .card-skeleton{
+        width: 71px;
+        height: 100px;
+    }
+  }

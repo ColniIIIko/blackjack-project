@@ -1,0 +1,12 @@
+.table{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    height: calc(100% - 6rem);
+}
+
+.win-label{
+    font-size: 3rem;
+    font-weight: 500;
+    align-self: center;
+}

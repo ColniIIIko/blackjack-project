@@ -1,0 +1,13 @@
+.timer{
+    border-radius: 50%;
+    border: 2px solid var(--font-color-primary);
+    font-size: 1rem;
+    line-height: 21px;
+    color: var(--font-color-primary);
+    background: var(--bg-color-secondary);
+    height: 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,25 @@
+.hand__stat{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hand__bet{
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    font-size: 1.2rem;
+    width: 150%;
+}
+
+.hand__bet-ico{
+    width: 27px;
+    height: 27px;
+}
+
+@media screen and (max-width: 670px) {
+    .hand__bet-ico{
+        width: 20px;
+        height: 20px;
+    }
+}

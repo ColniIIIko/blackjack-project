@@ -1,0 +1,111 @@
+.card-hand{
+    position: relative;
+}
+
+.card-hand__current .score-box{ 
+    background-color: var(--color-current);
+    animation: pop-up .2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    animation-delay: .05s;
+}
+
+@keyframes pop-up {
+    0%{
+        transform: scale(1);
+    }
+
+    60%{
+        transform: scale(1.15);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
+
+.end-game-label{
+    font-size: 1.2rem;
+}
+
+.end-game-label__lose{
+    color: var(--color-bust);
+}
+
+.end-game-label__win{
+    color: var(--color-win);
+}
+
+.hand__info{
+    align-self: center;
+    width: max-content;
+}
+
+.score{
+    position: relative;
+    right: -105%;
+    bottom: -5%;
+    width: max-content;
+}
+
+.player-score{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.2rem;
+    position: relative;
+    right: -75%;
+    bottom: -80%;
+}
+
+.score-box{
+    font-size: 1.2rem;
+    background-color: var(--bg-color-light);
+    color: var(--font-color-dark);
+    border-radius: 2px;
+    width: 2.2rem;
+    padding: 0.4rem;
+    aspect-ratio: 1 / 1;
+}
+
+.card-hand .score-box__lose{
+    background-color: var(--color-bust);
+}
+
+.card-hand .score-box__win{
+    background-color: var(--color-win);
+}
+
+.cards{
+    display: flex;
+    column-gap: 0.4rem;
+}
+
+.player-cards{
+    width: 99px;
+    height: 140px;
+    position: relative;
+}
+
+.player-hand{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+@media screen and (max-width: 670px) {
+    .player-score{
+        bottom: -75%;
+    }
+
+    .score-box{
+        width: 2.1rem;
+    }
+
+    .player-cards{
+        width: 71px;
+        height: 100px;
+    }
+
+    .card{
+        column-gap: 0.1rem;
+    }
+}
