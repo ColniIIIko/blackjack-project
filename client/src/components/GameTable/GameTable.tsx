@@ -13,6 +13,7 @@ import Players from '../Players/Players';
 import styles from './gameTable.module.css';
 import { PlayerState } from '../../types/state';
 import StartGameButton from '../StartGameButton/StartGameButton';
+import GameTableHeader from '../GameTableHeader/GameTableHeader';
 
 const GameTable = observer(function () {
   const user = useContext(UserContext)!;
@@ -65,6 +66,7 @@ const GameTable = observer(function () {
           isTimerOn={!isSingle}
         />
       </ModalWindow>
+      <GameTableHeader onTableClose={() => {}} />
       <Players
         players={playersState}
         isEnd={isGameEnd}
