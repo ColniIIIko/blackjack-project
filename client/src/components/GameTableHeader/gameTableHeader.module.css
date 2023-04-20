@@ -10,53 +10,8 @@
     position: absolute;
 }
 
-.help-btn,
 .close-btn{
     cursor: pointer;
-}
-
-.help-btn:hover{
-    transform-origin: center bottom;
-    animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-
-    12.5%{
-        transform: rotate(-8deg) scale(1.2);
-    }
-
-    25%{
-        transform: rotate(0) scale(1.2);
-    }
-
-    37.5%{
-        transform: rotate(8deg) scale(1.2);
-    }
-
-    50%{
-        transform: rotate(0) scale(1.2);
-    }
-
-    62.5%{
-        transform: rotate(-8deg) scale(1.2);
-    }
-
-    75%{
-        transform: rotate(0) scale(1.2);
-    }
-
-    82.5%{
-        transform: rotate(8deg) scale(1.2);
-    }
-
-    100%{
-        transform: rotate(0) scale(1);
-    }
-}
-
-.help-btn:hover .help-ico{
-    filter: invert(63%) sepia(28%) saturate(612%) hue-rotate(73deg) brightness(94%) contrast(86%);
 }
 
 .close-btn:hover{
@@ -97,7 +52,6 @@
     }
 }
 
-.help-ico,
 .close-ico{
     user-select: none;
     height: 1.2rem;
