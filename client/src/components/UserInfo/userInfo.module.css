@@ -10,6 +10,8 @@
     padding: 0.125rem 0.25rem;
     color: var(--font-color-dark);
     background: var(--bg-color-light);
+    width: max-content;
+    align-self: flex-end;
 }
 
 .balance{
