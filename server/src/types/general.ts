@@ -35,4 +35,10 @@ export enum GameStatus {
   IDLE = 'idle',
 }
 
+export type Room = {
+  id: string;
+  playersCount: number;
+  maxPlayersCount: number;
+};
+
 export type Winner = 'dealer' | 'player' | 'draw';

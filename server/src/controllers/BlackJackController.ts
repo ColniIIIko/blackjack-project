@@ -16,6 +16,8 @@ export class BlackJackController {
   public gameStatus: GameStatus = GameStatus.IDLE;
   public insuranceCount: number = 0;
 
+  public MAX_PLAYER_AMOUNT = 3;
+
   private currentPlayerIndex = 0;
 
   public drawInitialCards() {
@@ -106,6 +108,8 @@ export class BlackJackController {
   }
 
   public hasNextPlayer() {
+    // console.log('active', this.activePlayerAmount);
+    // console.log('current', this.currentPlayerIndex);
     return this.activePlayerAmount > this.currentPlayerIndex + 1;
   }
 

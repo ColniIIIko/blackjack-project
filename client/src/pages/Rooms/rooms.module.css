@@ -1,0 +1,25 @@
+.rooms{
+    width: 100%;
+    height: calc(100% - 6rem);
+    padding-top: calc(0.5rem + env(safe-area-inset-top, 0));
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0));
+    padding-left: calc(0.5rem + env(safe-area-inset-left, 0));
+    padding-right: calc(0.5rem + env(safe-area-inset-right, 0));
+}
+
+.rooms-list{
+    display: grid; 
+    gap: 1rem;
+    padding-top: 1.5rem;
+}
+
+.rooms_empty{
+    font-size: 1.5rem;
+    place-self: center;
+}
+
+.rooms__header{
+    display: flex;
+    justify-content: space-between;
+    height: max-content;
+}

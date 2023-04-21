@@ -1,22 +1,25 @@
 import { observer } from 'mobx-react-lite';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useBlackJackState } from '../../hooks/useBlackJackState';
 import { socket } from '../../socket';
-import { UserContext } from '../../stores/UserStore/UserStore';
-import BetChoice from '../BetChoice/BetChoice';
-import Dealer from '../Dealer/Dealer';
-import InsuranceOptionChoice from '../InsuranceOptionChoice/InsuranceOptionChoice';
-import ModalWindow from '../ModalWindow/ModalWindow';
-import PlayerOptionChoice from '../PlayerOptionChoice/playerOptionChoice';
-import Players from '../Players/Players';
+import BetChoice from '../../components/BetChoice/BetChoice';
+import Dealer from '../../components/Dealer/Dealer';
+import InsuranceOptionChoice from '../../components/InsuranceOptionChoice/InsuranceOptionChoice';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import PlayerOptionChoice from '../../components/PlayerOptionChoice/playerOptionChoice';
+import Players from '../../components/Players/Players';
+import { PlayerState } from '../../types/state';
+import StartGameButton from '../../components/StartGameButton/StartGameButton';
+import GameTableHeader from '../../components/GameTableHeader/GameTableHeader';
 
 import styles from './gameTable.module.css';
-import { PlayerState } from '../../types/state';
-import StartGameButton from '../StartGameButton/StartGameButton';
-import GameTableHeader from '../GameTableHeader/GameTableHeader';
+import { useNavigate, useParams } from 'react-router-dom';
+import { GlobalContext } from '../../stores/GlobalStore';
 
 const GameTable = observer(function () {
-  const user = useContext(UserContext)!;
+  const { userStore } = useContext(GlobalContext)!;
+  const { id } = useParams();
+  const navigate = useNavigate();
   const {
     playersState,
     dealerState,
@@ -30,11 +33,11 @@ const GameTable = observer(function () {
     handleInsurance,
     handleDecision,
     handleBet,
-  } = useBlackJackState(socket, user);
+  } = useBlackJackState(socket, userStore, id!);
 
   useEffect(() => {
     const onBalanceUpdate = (player: PlayerState) => {
-      user.changeBalance(player.balance);
+      userStore.changeBalance(player.balance);
     };
 
     socket.on('player-balance-update', onBalanceUpdate);
@@ -42,7 +45,13 @@ const GameTable = observer(function () {
     return () => {
       socket.off('player-balance-update', onBalanceUpdate);
     };
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleTableClose = useCallback(() => {
+    socket.emit('player-room-leave', id || '');
+    navigate('/');
+  }, [id, navigate]);
 
   return (
     <main className={styles['table']}>
@@ -55,7 +64,7 @@ const GameTable = observer(function () {
       </ModalWindow>
       <ModalWindow isVisible={isBetting}>
         <BetChoice
-          defaultBet={user.previousBet || 20}
+          defaultBet={userStore.previousBet || 20}
           onBet={(bet) => handleBet(bet)}
           isTimerOn={!isSingle}
         />
@@ -66,7 +75,7 @@ const GameTable = observer(function () {
           isTimerOn={!isSingle}
         />
       </ModalWindow>
-      <GameTableHeader onTableClose={() => {}} />
+      <GameTableHeader onTableClose={handleTableClose} />
       <Players
         players={playersState}
         isEnd={isGameEnd}

@@ -1,4 +1,4 @@
-import { Bet, PlayerChoice, User } from './general';
+import { Bet, PlayerChoice, Room, User } from './general';
 import { DealerState, PlayerState } from './state';
 
 export type States = {
@@ -9,24 +9,28 @@ export type States = {
 export interface ServerToClientEvents {
   'table-bet-accepted': (players: PlayerState[]) => void;
   'table-join': (states: States) => void;
-  'table-update': (players: PlayerState[]) => void;
+  'table-update': (player: PlayerState[]) => void;
   'table-initial-cards': (states: States) => void;
   'table-make-bet': () => void;
   'table-make-insurance': () => void;
   'make-decision': (possibleChoices: PlayerChoice[]) => void;
-  'table-player-draw': (players: PlayerState[]) => void;
-  'table-next-hand': (players: PlayerState[]) => void;
-  'table-next-player': (players: PlayerState[]) => void;
+  'table-player-draw': (player: PlayerState[]) => void;
+  'table-next-hand': (player: PlayerState[]) => void;
+  'table-next-player': (player: PlayerState[]) => void;
   'table-dealer-draw': (dealer: DealerState) => void;
-  'table-end-game': (players: PlayerState[]) => void;
-  'table-start-game': (players: PlayerState[], isSingle: boolean) => void;
+  'table-end-game': (player: PlayerState[]) => void;
+  'table-start-game': (player: PlayerState[], isSingle: boolean) => void;
   'player-balance-update': (player: PlayerState) => void;
+  'player-room-created': (roomId: string) => void;
+  rooms: (rooms: Room[]) => void;
 }
 
 export interface ClientToServerEvents {
   'player-game-start': () => void;
-  'player-room-enter': (player: User) => void;
+  'player-room-enter': (player: User, roomId: string) => void;
+  'player-room-create': () => void;
   'player-decision': (decision: PlayerChoice) => void;
   'player-bet': (bet: Bet) => void;
   'player-insurance': (decision: boolean) => void;
+  'player-room-leave': (roomId: string) => void;
 }

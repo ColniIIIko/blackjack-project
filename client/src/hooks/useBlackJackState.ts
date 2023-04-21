@@ -20,7 +20,11 @@ type States = {
   dealer: DealerState;
 };
 
-export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToServerEvents>, user: User) => {
+export const useBlackJackState = (
+  socket: Socket<ServerToClientEvents, ClientToServerEvents>,
+  user: User,
+  roomId: string
+) => {
   const [isChoosing, setIsChoosing] = useState(false);
   const [isBetting, setIsBetting] = useState(false);
   const [isInsurance, setIsInsurance] = useState(false);
@@ -154,9 +158,8 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
   }, [socket, user]);
 
   useEffect(() => {
-    socket.emit('player-room-enter', user);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    socket.emit('player-room-enter', user, roomId);
+  }, [roomId, socket, user]);
 
   return {
     playersState,

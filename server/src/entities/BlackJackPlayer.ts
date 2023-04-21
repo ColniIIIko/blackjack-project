@@ -31,6 +31,7 @@ export class BlackJackPlayer implements Player {
     this.totalWin = null;
     this.insuranceBet = null;
     this.isCurrent = false;
+    this.isActive = true;
   }
 
   public splitHand() {
