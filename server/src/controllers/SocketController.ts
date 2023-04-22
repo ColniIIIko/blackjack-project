@@ -167,6 +167,7 @@ export class SocketController {
       this.bjController.currentPlayer?.socketId === socket.id &&
       this.bjController.gameStatus === GameStatus.PLAYING
     ) {
+      this.bjController.gameStatus = GameStatus.DEALER_PLAY;
       this.execWithDelay(() => {
         this.handleDealerPlay();
       }, 1000);
@@ -256,18 +257,21 @@ export class SocketController {
 
   // probably need to add event for win/lose insurance bet
   private handleInsurance() {
-    this.execWithDelay(() => {
-      if (this.bjController.dealer.getHiddenCardValue() === 10) {
-        for (const player of this.bjController.activePlayers) {
-          if (player!.insuranceBet) {
-            player!.totalWin = player!.insuranceBet * 3;
-          }
+    if (this.bjController.dealer.getHiddenCardValue() === 10) {
+      for (const player of this.bjController.activePlayers) {
+        if (player!.insuranceBet) {
+          player!.totalWin = player!.insuranceBet * 3;
         }
-        this.handleDealerPlay();
-      } else {
-        this.handleDecision();
       }
-    }, 1000);
+      this.execWithDelay(() => {
+        this.bjController.gameStatus = GameStatus.DEALER_PLAY;
+        this.handleDealerPlay();
+      }, 1000);
+    } else {
+      this.execWithDelay(() => {
+        this.handleDecision();
+      }, 400);
+    }
   }
 
   private handlePlayerDraw() {
@@ -284,6 +288,7 @@ export class SocketController {
         this.handleEndGame();
       }, 1000);
     } else {
+      this.bjController.gameStatus = GameStatus.DEALER_PLAY;
       this.execWithDelay(() => {
         this.handleDealerPlay();
       }, 1000);
@@ -330,6 +335,7 @@ export class SocketController {
     } else if (this.bjController.hasNextPlayer()) {
       this.handleNextPlayer();
     } else {
+      this.bjController.gameStatus = GameStatus.DEALER_PLAY;
       this.execWithDelay(() => {
         this.handleDealerPlay();
       }, 1000);
