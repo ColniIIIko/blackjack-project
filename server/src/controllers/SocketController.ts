@@ -33,17 +33,6 @@ export class SocketController {
     return this.bjController.MAX_PLAYER_AMOUNT;
   }
 
-  // public createRoom(user: User, socket: Socket<ClientToServerEvents, ServerToClientEvents>) {
-  //   socket.join(this.roomId);
-  //   this.initSocket(socket);
-
-  //   this.bjController.handleNewUser(user, socket.id);
-  //   socket.emit('table-join', {
-  //     players: this.bjController.playersToJSON(),
-  //     dealer: this.bjController.dealer.toJSON(),
-  //   });
-  // }
-
   public joinRoom(user: User, socket: Socket<ClientToServerEvents, ServerToClientEvents>) {
     if (this.bjController.playersAmount < this.bjController.MAX_PLAYER_AMOUNT) {
       socket.join(this.roomId);
@@ -65,19 +54,6 @@ export class SocketController {
   private initSocket(socket: Socket<ClientToServerEvents, ServerToClientEvents>) {
     this.sockets[socket.id] = socket;
 
-    // socket.on('player-room-enter', (user: User) => {
-    //   this.bjController.handleNewUser(user, socket.id);
-    //   socket.emit('table-join', {
-    //     players: this.bjController.playersToJSON(),
-    //     dealer: this.bjController.dealer.toJSON(),
-    //   });
-
-    //   socket.broadcast.emit('table-update', this.bjController.playersToJSON());
-    //   if (this.bjController.activePlayerAmount > 1 && this.bjController.gameStatus === GameStatus.IDLE) {
-    //     this.startGame();
-    //   }
-    // });
-
     socket.on('player-game-start', () => {
       if (this.bjController.gameStatus === GameStatus.IDLE) {
         this.startGame();
@@ -85,9 +61,8 @@ export class SocketController {
     });
 
     socket.on('player-bet', (bet: Bet) => {
-      //this.handlePlayerBet(bet);
       this.bjController.handlePlayerBet(socket.id, bet);
-      //TODO: here should be check for player current balance or not?
+
       const player = this.bjController.getBySocketId(socket.id);
       socket.emit('player-balance-update', player!.toJSON());
       this.io.emit('table-bet-accepted', this.bjController.playersToJSON());
@@ -152,7 +127,7 @@ export class SocketController {
     });
   }
 
-  public handlePlayerLeave(socket: Socket<ClientToServerEvents, ServerToClientEvents>) {
+  private handlePlayerLeave(socket: Socket<ClientToServerEvents, ServerToClientEvents>) {
     socket.leave(this.roomId);
     this.bjController.removePlayerBySocketId(socket.id);
     if (this.bjController.activePlayerAmount === 0) {
@@ -255,7 +230,6 @@ export class SocketController {
     }, 1000);
   }
 
-  // probably need to add event for win/lose insurance bet
   private handleInsurance() {
     if (this.bjController.dealer.getHiddenCardValue() === 10) {
       for (const player of this.bjController.activePlayers) {
