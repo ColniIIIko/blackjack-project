@@ -134,11 +134,21 @@ export class SocketController {
     socket.on('player-room-leave', () => {
       this.handlePlayerLeave(socket);
       this.leaveAction(this.roomId);
+      socket.removeAllListeners('player-game-start');
+      socket.removeAllListeners('player-bet');
+      socket.removeAllListeners('player-insurance');
+      socket.removeAllListeners('player-decision');
+      socket.removeAllListeners('player-leave');
     });
 
     socket.on('disconnect', () => {
       this.handlePlayerLeave(socket);
       this.leaveAction(this.roomId);
+      socket.removeAllListeners('player-game-start');
+      socket.removeAllListeners('player-bet');
+      socket.removeAllListeners('player-insurance');
+      socket.removeAllListeners('player-decision');
+      socket.removeAllListeners('player-leave');
     });
   }
 
