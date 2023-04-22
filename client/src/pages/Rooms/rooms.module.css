@@ -7,10 +7,17 @@
     padding-right: calc(0.5rem + env(safe-area-inset-right, 0));
 }
 
+
+
 .rooms-list{
     display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     gap: 1rem;
     padding-top: 1.5rem;
+}
+
+.rooms-list:has(.rooms_empty){
+    grid-template-columns: 1fr;
 }
 
 .rooms_empty{
