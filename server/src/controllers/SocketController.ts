@@ -147,6 +147,12 @@ export class SocketController {
     this.bjController.removePlayerBySocketId(socket.id);
     if (this.bjController.activePlayerAmount === 0) {
       this.clear();
+      if (this.bjController.playersAmount !== 0) {
+        this.io.emit('table-full-update', {
+          players: this.bjController.playersToJSON(),
+          dealer: this.bjController.dealer.toJSON(),
+        });
+      }
     } else if (
       this.bjController.currentPlayer?.socketId === socket.id &&
       this.bjController.gameStatus === GameStatus.PLAYING

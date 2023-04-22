@@ -69,7 +69,7 @@ export const useBlackJackState = (
       setDealerState(states.dealer);
     };
 
-    const onJoin = (states: States) => {
+    const onStates = (states: States) => {
       setIsIdle(states.players.length === 1);
       setPlayersState(states.players);
       setDealerState(states.dealer);
@@ -103,7 +103,8 @@ export const useBlackJackState = (
     socket.on('table-player-draw', onPlayers);
     socket.on('table-next-hand', onPlayers);
 
-    socket.on('table-join', onJoin);
+    socket.on('table-full-update', onStates);
+    socket.on('table-join', onStates);
 
     socket.on('table-initial-cards', onInitialCards);
 
@@ -124,7 +125,7 @@ export const useBlackJackState = (
       socket.off('table-player-draw', onPlayers);
       socket.off('table-next-hand', onPlayers);
 
-      socket.off('table-join', onJoin);
+      socket.off('table-join', onStates);
 
       socket.off('table-initial-cards', onInitialCards);
 

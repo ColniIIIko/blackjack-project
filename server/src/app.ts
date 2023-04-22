@@ -25,7 +25,6 @@ export class App {
 
   private initializeConnection() {
     this.io.on('connection', (socket) => {
-      console.log('rooms', this.getRoomsList());
       socket.emit('rooms', this.getRoomsList());
 
       socket.on('player-room-enter', (user: User, roomId: string) => {
@@ -51,9 +50,7 @@ export class App {
   private handlePlayerLeave = (roomId: string) => {
     const socketController = this.roomsMap.get(roomId);
     if (!socketController) return;
-    console.log('ROOMS:', this.getRoomsList());
     if (socketController.playersAmount === 0) {
-      console.log('if');
       this.roomsMap.delete(roomId);
     }
 
