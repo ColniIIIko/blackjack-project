@@ -40,18 +40,26 @@ const GameTable = observer(function () {
       userStore.changeBalance(player.balance);
     };
 
+    const onRoomFail = () => {
+      navigate('/');
+    };
+
+    socket.on('room-dont-exist', onRoomFail);
+    socket.on('room-full', onRoomFail);
     socket.on('player-balance-update', onBalanceUpdate);
 
     return () => {
       socket.off('player-balance-update', onBalanceUpdate);
+      socket.off('room-dont-exist', onRoomFail);
+      socket.off('room-full', onRoomFail);
+      socket.emit('player-room-leave', id!);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTableClose = useCallback(() => {
-    socket.emit('player-room-leave', id || '');
     navigate('/');
-  }, [id, navigate]);
+  }, [navigate]);
 
   return (
     <main className={styles['table']}>

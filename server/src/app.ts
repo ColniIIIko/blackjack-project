@@ -29,7 +29,10 @@ export class App {
 
       socket.on('player-room-enter', (user: User, roomId: string) => {
         const socketController = this.roomsMap.get(roomId);
-        if (!socketController) return;
+        if (!socketController) {
+          socket.emit('room-dont-exist');
+          return;
+        }
 
         socketController.joinRoom(user, socket);
 

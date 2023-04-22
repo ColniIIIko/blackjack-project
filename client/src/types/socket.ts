@@ -24,6 +24,8 @@ export interface ServerToClientEvents {
   'player-balance-update': (player: PlayerState) => void;
   'player-room-created': (roomId: string) => void;
   rooms: (rooms: Room[]) => void;
+  'room-dont-exist': () => void;
+  'room-full': () => void;
 }
 
 export interface ClientToServerEvents {

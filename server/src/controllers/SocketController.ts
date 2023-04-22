@@ -48,6 +48,8 @@ export class SocketController {
       if (this.bjController.activePlayerAmount > 1 && this.bjController.gameStatus === GameStatus.IDLE) {
         this.startGame();
       }
+    } else {
+      socket.emit('room-full');
     }
   }
 
