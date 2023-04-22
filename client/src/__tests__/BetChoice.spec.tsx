@@ -1,19 +1,19 @@
 import { render, fireEvent } from '@testing-library/react';
 import BetChoice from '../components/BetChoice/BetChoice';
-import { UserContext } from '../stores/UserStore/UserStore';
 import { Bet } from '../types/general';
+import { GlobalContext } from '../stores/GlobalStore';
 
 const mockOnBet = jest.fn();
 const mockSetPreviousBet = jest.fn();
 const renderBetChoice = (defaultBet: Bet = 20, isTimerOn: boolean = false) =>
   render(
-    <UserContext.Provider value={{ setPreviousBet: mockSetPreviousBet } as any}>
+    <GlobalContext.Provider value={{ userStore: { setPreviousBet: mockSetPreviousBet } } as any}>
       <BetChoice
         onBet={mockOnBet}
         defaultBet={defaultBet}
         isTimerOn={isTimerOn}
       />
-    </UserContext.Provider>
+    </GlobalContext.Provider>
   );
 
 jest.useFakeTimers();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { UserContext } from '../stores/UserStore/UserStore';
 import PlayerInfo from '../components/Player/PlayerInfo';
+import { GlobalContext } from '../stores/GlobalStore';
 
 const renderPlayerInfo = (
   userId: string = '1',
@@ -10,13 +10,13 @@ const renderPlayerInfo = (
   insuranceBet: number | null = null
 ) =>
   render(
-    <UserContext.Provider value={{ id: userId } as any}>
+    <GlobalContext.Provider value={{ userStore: { id: userId } } as any}>
       <PlayerInfo
         id={playerId}
         name={name}
         insuranceBet={insuranceBet}
       />
-    </UserContext.Provider>
+    </GlobalContext.Provider>
   );
 
 describe('PlayerInfo', () => {
