@@ -110,7 +110,7 @@ export class BlackJackController {
   public hasNextPlayer() {
     // console.log('active', this.activePlayerAmount);
     // console.log('current', this.currentPlayerIndex);
-    return this.activePlayerAmount > this.currentPlayerIndex + 1;
+    return this.activePlayerAmount > this.currentPlayerIndex + 1 && this.activePlayerAmount !== 0;
   }
 
   public setNextPlayer() {
@@ -152,9 +152,13 @@ export class BlackJackController {
   public removePlayerBySocketId(socketId: string) {
     const player = this.getBySocketId(socketId);
     if (player) {
+      const playerIndex = this.players.indexOf(player);
       this.players = this.players.filter((p) => p.id !== player.id);
 
-      this.currentPlayerIndex -= 1;
+      if (player.isActive && playerIndex <= this.currentPlayerIndex) {
+        this.currentPlayerIndex -= 1;
+      }
+
       if (this.currentPlayer?.id === player?.id && this.hasNextPlayer()) {
         this.setNextPlayer();
       }

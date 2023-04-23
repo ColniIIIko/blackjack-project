@@ -47,6 +47,11 @@ export class App {
         socket.emit('player-room-created', roomId);
         this.io.emit('rooms', this.getRoomsList());
       });
+
+      socket.on('disconnect', () => {
+        socket.removeAllListeners('player-room-enter');
+        socket.removeAllListeners('player-room-create');
+      });
     });
   }
 

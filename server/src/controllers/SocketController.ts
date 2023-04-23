@@ -116,6 +116,7 @@ export class SocketController {
       socket.removeAllListeners('player-insurance');
       socket.removeAllListeners('player-decision');
       socket.removeAllListeners('player-leave');
+      socket.removeAllListeners('player-room-leave');
     });
 
     socket.on('disconnect', () => {
