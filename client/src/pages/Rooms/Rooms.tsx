@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { socket } from '../../socket';
 import Room from '../../components/Room/Room';
 import HelpButton from '../../components/HelpButton/HelpButton';
@@ -36,6 +36,11 @@ const Rooms = observer(() => {
     [navigate]
   );
 
+  const rooms = useMemo(
+    () => roomsStore.rooms.slice().sort((lhs, rhs) => lhs.playersCount - rhs.playersCount),
+    [roomsStore.rooms]
+  );
+
   return (
     <main className={styles['rooms']}>
       <div className={styles['rooms__header']}>
@@ -43,8 +48,8 @@ const Rooms = observer(() => {
         <Button onClick={handleRoomCreate}>create room</Button>
       </div>
       <div className={styles['rooms-list']}>
-        {roomsStore.rooms.length ? (
-          roomsStore.rooms.map((room) => (
+        {rooms.length ? (
+          rooms.map((room) => (
             <Room
               key={room.id}
               {...room}

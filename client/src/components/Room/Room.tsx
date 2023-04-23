@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './room.module.css';
 
@@ -10,9 +11,14 @@ type Props = {
 };
 
 function Room({ id, playersCount, maxPlayersCount, onJoin }: Props) {
+  const roomStyle = classNames({
+    [styles['room']]: true,
+    [styles['room_full']]: playersCount === maxPlayersCount,
+  });
+
   return (
     <div
-      className={styles['room']}
+      className={roomStyle}
       onClick={() => onJoin(id)}
     >
       <span>room#{id.slice(0, 4)}</span>
