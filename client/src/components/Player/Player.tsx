@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import PlayerCardHand from '../CardHand/PlayerCardHand';
 import { PlayerState } from '../../types/state';
 import { getEndGameLabel } from '../../utils/getPlayerEndGameLabel';
 import CardSkeleton from '../CardSkeleton/CardSkeleton';
 import PlayerInfo from './PlayerInfo';
+import classNames from 'classnames';
 
 import styles from './player.module.css';
+import { GlobalContext } from '../../stores/GlobalStore';
 
 type Props = PlayerState & {
   isEnd: boolean;
 };
 
 function Player({ hand, isEnd, name, currentHand, insuranceBet, isCurrent, id }: Props) {
+  const { userStore } = useContext(GlobalContext);
+
+  const playerStyle = useMemo(
+    () =>
+      classNames({
+        [styles['player']]: true,
+        [styles['player_i']]: userStore.name === name,
+      }),
+    [name, userStore.name]
+  );
+
   return (
-    <div className={styles['player']}>
+    <div className={playerStyle}>
       <div className={styles['player-hand']}>
         {hand.length && hand[0].cards.length ? (
           hand.map((hand) => (

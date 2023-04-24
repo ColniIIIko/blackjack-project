@@ -3,6 +3,7 @@
     position: relative;
     justify-content: center;
     height: calc(100% - 6rem);
+    overflow: hidden;
 }
 
 .win-label{

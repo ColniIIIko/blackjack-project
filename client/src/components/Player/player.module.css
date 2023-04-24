@@ -3,6 +3,9 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
+    width: max-content;
+    text-align: center;
+    min-width: 0;
 }
 
 .player-hand{
@@ -35,4 +38,17 @@
     align-items: center;
     position: absolute;
     bottom: -10%;
+}
+
+@media screen and (max-width:670px) {
+    .player-name{
+        font-size: 1.2rem;
+    }
+
+    .player:not(.player_i){
+        height: 60px;
+        width: 88px;
+        transform: scale(0.6);
+    
+    } 
 }
