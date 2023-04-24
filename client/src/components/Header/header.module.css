@@ -9,3 +9,17 @@
     height: 6rem;
     width: 100%;
 }
+
+.logo{
+    width: 174px;
+    height: 32px;
+    background-image: url('src/assets/evolution.svg');
+    background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 670px) {
+    .logo{
+        width: 23px;
+        background-image: url('src/assets/evolution_mobile.svg');
+    }
+}

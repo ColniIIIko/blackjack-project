@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23px" height="32px" viewBox="0 0 23 31" version="1.1">
+<defs>
+<radialGradient id="radial0" gradientUnits="userSpaceOnUse" cx="490.1" cy="382.9" fx="490.1" fy="382.9" r="650.3" gradientTransform="matrix(0.0201932,0,0,0.0195831,0,0)">
+<stop offset="0" style="stop-color:rgb(100%,100%,100%);stop-opacity:1;"/>
+<stop offset="1" style="stop-color:rgb(100%,100%,100%);stop-opacity:1;"/>
+</radialGradient>
+<radialGradient id="radial1" gradientUnits="userSpaceOnUse" cx="507" cy="989.4" fx="507" fy="989.4" r="273.7" gradientTransform="matrix(0.0201932,0,0,0.0195831,0,0)">
+<stop offset="0" style="stop-color:rgb(100%,100%,100%);stop-opacity:1;"/>
+<stop offset="1" style="stop-color:rgb(100%,100%,100%);stop-opacity:1;"/>
+</radialGradient>
+</defs>
+<g id="surface1">
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 19.792969 7.75 C 19.792969 7.078125 19.746094 6.421875 19.65625 5.773438 C 21.5 8.136719 22.726562 11.183594 22.996094 14.851562 C 21.121094 14.996094 19.421875 15.035156 17.871094 14.988281 C 19.09375 12.84375 19.792969 10.375 19.792969 7.75 Z M 19.792969 7.75 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 22.996094 16.140625 C 22.0625 28.851562 9.628906 34.117188 0 29.121094 C 0.976562 26.992188 1.863281 24.726562 3.234375 22.6875 C 3.605469 22.710938 3.984375 22.730469 4.367188 22.730469 C 9.738281 22.730469 14.460938 20.070312 17.226562 16.027344 C 18.941406 15.945312 20.855469 15.976562 22.996094 16.140625 Z M 22.996094 16.140625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:url(#radial0);" d="M 19.65625 5.773438 C 19.746094 6.421875 19.792969 7.078125 19.792969 7.75 C 19.792969 10.375 19.09375 12.84375 17.871094 14.988281 C 4.683594 14.585938 2.675781 7.722656 0 1.871094 C 6.847656 -1.683594 15.117188 -0.0429688 19.65625 5.773438 Z M 19.65625 5.773438 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:url(#radial1);" d="M 4.367188 22.730469 C 3.984375 22.730469 3.605469 22.710938 3.234375 22.6875 C 5.558594 19.222656 9.285156 16.410156 17.226562 16.027344 C 14.460938 20.066406 9.738281 22.730469 4.367188 22.730469 Z M 4.367188 22.730469 "/>
+</g>
+</svg>
