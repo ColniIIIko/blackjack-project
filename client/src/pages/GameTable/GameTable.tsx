@@ -15,12 +15,14 @@ import GameTableHeader from '../../components/GameTableHeader/GameTableHeader';
 import styles from './gameTable.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GlobalContext } from '../../stores/GlobalStore';
+import PlayerWin from '../../components/PlayerWin/PlayerWin';
 
 const GameTable = observer(function () {
   const { userStore } = useContext(GlobalContext)!;
   const { id } = useParams();
   const navigate = useNavigate();
   const {
+    playerWin,
     playersState,
     dealerState,
     isChoosing,
@@ -88,6 +90,7 @@ const GameTable = observer(function () {
         players={playersState}
         isEnd={isGameEnd}
       />
+      {playerWin && <PlayerWin win={playerWin} />}
       {isIdle && <StartGameButton />}
       <Dealer {...dealerState} />
     </main>

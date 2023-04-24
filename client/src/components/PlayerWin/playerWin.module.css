@@ -1,0 +1,28 @@
+.win{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 20%;
+    width: 40%;
+    align-self: center;
+    font-size: 2rem;
+    background: linear-gradient(to right,transparent, #ffffff10 50%, transparent 100%);
+    transform: translateY(-20%);
+}
+
+.win-label{
+    color: var(--color-current);
+}
+
+.win-amount{
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+}
+
+@media screen and (max-width: 670px) {
+    .win{
+        width: 80%;
+    }
+}

@@ -22,6 +22,7 @@ export interface ServerToClientEvents {
   'table-end-game': (player: PlayerState[]) => void;
   'table-start-game': (player: PlayerState[], isSingle: boolean) => void;
   'player-balance-update': (player: PlayerState) => void;
+  'player-win': (win: number) => void;
   'player-room-created': (roomId: string) => void;
   rooms: (rooms: Room[]) => void;
   'room-dont-exist': () => void;

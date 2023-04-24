@@ -182,6 +182,9 @@ export class SocketController {
     this.io.emit('table-end-game', this.bjController.playersToJSON());
     this.bjController.activePlayers.forEach((player) => {
       const socket = this.sockets[player.socketId];
+      if (player.totalWin) {
+        socket.emit('player-win', player.totalWin);
+      }
       socket.emit('player-balance-update', player.toJSON());
     });
 

@@ -30,6 +30,7 @@ export const useBlackJackState = (
   const [isInsurance, setIsInsurance] = useState(false);
   const [isSingle, setIsSingle] = useState(false);
   const [isIdle, setIsIdle] = useState(true);
+  const [playerWin, setPlayerWin] = useState<number | null>(null);
   const [playersState, setPlayersState] = useState<PlayerState[]>([]);
   const [dealerState, setDealerState] = useState<DealerState>(INITIAL_DEALER_STATE);
   const [playerOptions, setPlayerOptions] = useState<PlayerChoice[]>([]);
@@ -67,6 +68,10 @@ export const useBlackJackState = (
     const onInitialCards = (states: States) => {
       setPlayersState(states.players);
       setDealerState(states.dealer);
+    };
+
+    const onWin = (win: number) => {
+      setPlayerWin(win);
     };
 
     const onStates = (states: States) => {
@@ -116,6 +121,8 @@ export const useBlackJackState = (
 
     socket.on('table-dealer-draw', onDealerDraw);
 
+    socket.on('player-win', onWin);
+
     socket.on('table-end-game', onGameEnd);
 
     return () => {
@@ -137,12 +144,15 @@ export const useBlackJackState = (
 
       socket.off('table-dealer-draw', onDealerDraw);
 
+      socket.off('player-win', onWin);
+
       socket.off('table-end-game', onGameEnd);
     };
   }, [socket]);
 
   useEffect(() => {
     const onGameStart = (players: PlayerState[], isSingle: boolean) => {
+      setPlayerWin(null);
       setIsIdle(false);
       setIsSingle(isSingle);
       setPlayersState(players);
@@ -163,6 +173,7 @@ export const useBlackJackState = (
   }, [roomId, socket, user]);
 
   return {
+    playerWin,
     playersState,
     dealerState,
     isIdle,
