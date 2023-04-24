@@ -20,7 +20,11 @@ type States = {
   dealer: DealerState;
 };
 
-export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToServerEvents>, user: User) => {
+export const useBlackJackState = (
+  socket: Socket<ServerToClientEvents, ClientToServerEvents>,
+  user: User,
+  roomId: string
+) => {
   const [isChoosing, setIsChoosing] = useState(false);
   const [isBetting, setIsBetting] = useState(false);
   const [isInsurance, setIsInsurance] = useState(false);
@@ -65,7 +69,7 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
       setDealerState(states.dealer);
     };
 
-    const onJoin = (states: States) => {
+    const onStates = (states: States) => {
       setIsIdle(states.players.length === 1);
       setPlayersState(states.players);
       setDealerState(states.dealer);
@@ -99,7 +103,8 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
     socket.on('table-player-draw', onPlayers);
     socket.on('table-next-hand', onPlayers);
 
-    socket.on('table-join', onJoin);
+    socket.on('table-full-update', onStates);
+    socket.on('table-join', onStates);
 
     socket.on('table-initial-cards', onInitialCards);
 
@@ -120,7 +125,7 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
       socket.off('table-player-draw', onPlayers);
       socket.off('table-next-hand', onPlayers);
 
-      socket.off('table-join', onJoin);
+      socket.off('table-join', onStates);
 
       socket.off('table-initial-cards', onInitialCards);
 
@@ -154,9 +159,8 @@ export const useBlackJackState = (socket: Socket<ServerToClientEvents, ClientToS
   }, [socket, user]);
 
   useEffect(() => {
-    socket.emit('player-room-enter', user);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    socket.emit('player-room-enter', user, roomId);
+  }, [roomId, socket, user]);
 
   return {
     playersState,
