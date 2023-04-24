@@ -1,0 +1,61 @@
+.window{
+    padding: 1.5rem 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-color-addition);
+    border-radius: 6px;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: scroll;
+    text-align: left;
+}
+
+.window::-webkit-scrollbar-track {
+    display: none;
+}
+
+.window::-webkit-scrollbar {
+    width: 0.4rem;
+    
+}
+
+.window::-webkit-scrollbar-thumb {
+    padding-top: 1.5rem;
+   background: var(--bg-color-secondary);
+   border-radius: 100vw;
+} 
+
+.rules-header{
+    padding-bottom: 1rem;
+}
+
+.rules-subheader{
+    padding-bottom: 0.4rem;
+}
+
+.rules-paragraph,
+.rules-list{
+    padding-bottom: 1.5rem;
+}
+
+.rules-list{
+    padding-left: 1rem;
+}
+
+.rules-paragraph:has(+ .rules-paragraph){
+    padding-bottom: 0.75rem;
+}
+
+.rules-paragraph:has(+ .rules-list){
+    padding-bottom: 0.4rem;
+}
+
+.rules-list-item::marker{
+    color: var(--bg-color-dark-secondary);
+}
+
+@media screen and (max-width: 670px) {
+    .window{
+        padding: 1rem 1.5rem;
+    }
+}
