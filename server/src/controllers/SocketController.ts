@@ -108,6 +108,13 @@ export class SocketController {
       }
     });
 
+    socket.on('player-balance-update', (balance) => {
+      const player = this.bjController.getBySocketId(socket.id);
+      if (player) {
+        player.balance = balance;
+      }
+    });
+
     socket.on('player-room-leave', () => {
       this.handlePlayerLeave(socket);
       this.leaveAction(this.roomId);

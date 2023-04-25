@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { createContext, useCallback } from 'react';
 
 import styles from './withCloseModal.module.css';
 import { CLOSE_URL } from '../const';
@@ -6,6 +6,8 @@ import { CLOSE_URL } from '../const';
 type withCloseModalProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+export const ModalContext = createContext<null | React.Dispatch<React.SetStateAction<boolean>>>(null);
 
 export const withCloseModal = <P extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>>(
   Modal: React.ComponentType<P>
@@ -22,22 +24,24 @@ export const withCloseModal = <P extends React.DetailedHTMLProps<React.HTMLAttri
     );
 
     return (
-      <Modal
-        {...(props as unknown as P)}
-        onClick={onClose}
-      >
-        <div
-          className={styles['close-btn']}
-          onClick={() => setIsOpen(false)}
+      <ModalContext.Provider value={setIsOpen}>
+        <Modal
+          {...(props as unknown as P)}
+          onClick={onClose}
         >
-          <img
-            className={styles['close-ico']}
-            src={CLOSE_URL.href}
-            alt='close'
-          />
-        </div>
-        {children}
-      </Modal>
+          <div
+            className={styles['close-btn']}
+            onClick={() => setIsOpen(false)}
+          >
+            <img
+              className={styles['close-ico']}
+              src={CLOSE_URL.href}
+              alt='close'
+            />
+          </div>
+          {children}
+        </Modal>
+      </ModalContext.Provider>
     );
   };
 

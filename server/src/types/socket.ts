@@ -37,4 +37,5 @@ export interface ClientToServerEvents {
   'player-bet': (bet: Bet) => void;
   'player-insurance': (decision: boolean) => void;
   'player-room-leave': () => void;
+  'player-balance-update': (balance: number) => void;
 }

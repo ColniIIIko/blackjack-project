@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { HELP_URL } from '../../const';
 
 import styles from './helpButton.module.css';
-import ModalWindow from '../ModalWindow/ModalWindow';
 import Rules from '../Rules/Rules';
 import CloseModalWindow from '../ModalWindow/CloseModalWindow';
 
