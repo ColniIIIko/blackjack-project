@@ -8,6 +8,8 @@
     max-height: 80vh;
     overflow-y: scroll;
     text-align: left;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-color-secondary) transparent; 
 }
 
 .window::-webkit-scrollbar-track {
