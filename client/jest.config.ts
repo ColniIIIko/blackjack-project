@@ -17,6 +17,7 @@ const config: Config.InitialOptions = {
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
     '^react-native$': 'react-native-web',
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
   },
