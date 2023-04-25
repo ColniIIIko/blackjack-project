@@ -1,8 +1,8 @@
 import { makeAutoObservable } from 'mobx';
-import { Bet, User } from '../../types/general';
 import { v4 as uuid } from 'uuid';
-import { createContext } from 'react';
 import { generateUsername } from 'unique-username-generator';
+
+import { Bet, User } from '@/types/general';
 
 class UserStore implements User {
   id: string = uuid();
@@ -28,4 +28,3 @@ class UserStore implements User {
 }
 
 export const userStore = new UserStore();
-export const UserContext = createContext<UserStore | null>(null);

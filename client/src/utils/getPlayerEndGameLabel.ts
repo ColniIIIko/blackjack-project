@@ -1,4 +1,4 @@
-import { Winner } from '../types/general';
+import { Winner } from '@/types/general';
 
 export const getEndGameLabel = (isEnd: boolean, isBusted: boolean, winner: Winner | null) => {
   if (!isEnd) return null;
@@ -7,7 +7,7 @@ export const getEndGameLabel = (isEnd: boolean, isBusted: boolean, winner: Winne
 
   if (winner === 'player') return 'WIN';
 
-  if (winner === 'draw') return 'DRAW';
+  if (winner === 'draw') return 'PUSH';
 
   return 'LOSE';
 };

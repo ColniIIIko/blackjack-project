@@ -1,4 +1,4 @@
-import { Card, CardValue } from '../types/cards';
+import { Card, CardValue } from '@/types/cards';
 
 // handling ace
 export const cardStringValueToNumber = (cardValue: CardValue) => {

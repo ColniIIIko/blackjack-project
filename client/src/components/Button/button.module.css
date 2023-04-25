@@ -1,0 +1,10 @@
+.btn{
+    background-color: var(--bg-color-secondary);
+    cursor: pointer;
+    border: none;
+    color: var(--font-color-primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+    width: max-content;
+}

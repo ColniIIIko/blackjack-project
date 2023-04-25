@@ -13,7 +13,7 @@ export class BlackJackPlayerHand extends BlackJackHand {
   }
 
   get isSplitPossible() {
-    return this.cards[0].value === this.cards[1].value;
+    return this.cards[0].value === this.cards[1].value && this.cards.length === 2;
   }
 
   public toJSON(): PlayerHand {

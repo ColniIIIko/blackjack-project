@@ -15,16 +15,36 @@
 }
 
 .balance{
+    cursor: pointer;
     display: flex;
     column-gap: 0.5rem;
     font-size: 1.2rem;
     color: var(--font-color-primary);
     align-items: center;
+    width: max-content;
 }
 
 .chip-ico{
     width: 27px;
     height: 27px;
+}
+
+.balance:hover .chip-ico{
+    animation: lds-circle 1.2s ease;
+    animation-fill-mode: forwards;
+    will-change: transform;
+}
+
+@keyframes lds-circle {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(1080deg);
+  }
+  100% {
+    transform: rotateY(2160deg);
+  }
 }
 
 @media screen and (max-width: 670px) {

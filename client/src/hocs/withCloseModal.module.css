@@ -1,0 +1,14 @@
+.close-btn{
+    cursor: pointer;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 2;
+}
+
+.close-ico{
+    user-select: none;
+    height: 0.8rem;
+    width: 0.8rem;
+    filter: invert(44%) sepia(70%) saturate(0%) hue-rotate(167deg) brightness(99%) contrast(97%);
+}

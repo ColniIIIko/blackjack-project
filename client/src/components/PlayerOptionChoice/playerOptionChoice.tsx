@@ -1,6 +1,8 @@
 import React from 'react';
-import { PlayerChoice } from '../../types/general';
-import Timer from '../Timer/Timer';
+
+import { PlayerChoice } from '@/types/general';
+
+import Timer from '@/components/Timer/Timer';
 
 import styles from './playerOptionChoice.module.css';
 

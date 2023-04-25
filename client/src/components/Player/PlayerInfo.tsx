@@ -1,10 +1,11 @@
 import React, { useContext, useMemo } from 'react';
 import classNames from 'classnames';
-import { UserContext } from '../../stores/UserStore/UserStore';
-import { CHIP_URL } from '../../const';
+import { observer } from 'mobx-react-lite';
+
+import { CHIP_URL } from '@/const';
+import { GlobalContext } from '@/stores/GlobalStore';
 
 import styles from './player.module.css';
-import { observer } from 'mobx-react-lite';
 
 type Props = {
   name: string;
@@ -13,15 +14,15 @@ type Props = {
 };
 
 const PlayerInfo = observer(function ({ id, name, insuranceBet }: Props) {
-  const user = useContext(UserContext)!;
+  const { userStore } = useContext(GlobalContext);
 
   const nameStyle = useMemo(
     () =>
       classNames({
         [styles['player-name']]: true,
-        [styles['player-me']]: id === user.id,
+        [styles['player-me']]: id === userStore.id,
       }),
-    [id, user.id]
+    [id, userStore.id]
   );
 
   return (

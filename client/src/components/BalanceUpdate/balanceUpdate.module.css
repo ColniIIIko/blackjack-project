@@ -1,0 +1,26 @@
+.window{
+    padding: 1rem 6rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-color-addition);
+    border-radius: 6px;
+    row-gap: 1.5rem;
+}
+
+.balance-input{
+    outline: none;
+    border: none;
+    font-size: 1.4rem;
+    width: 15rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    background-color: var(--bg-color-primary);
+    color: var(--font-primary);
+    -moz-appearance: textfield;
+}
+
+.balance-input::-webkit-outer-spin-button,
+.balance-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

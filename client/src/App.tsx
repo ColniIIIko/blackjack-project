@@ -1,28 +1,26 @@
+import { RouterProvider } from 'react-router';
+
+import routes from '@/routes';
+import { useImagePreloader } from '@/hooks/useImagePreloader';
+import { useSocketConnection } from '@/hooks/useSocketConnection';
+import { useUpdateRooms } from '@/hooks/useUpdateRooms';
+import { ASSET_PATHS } from '@/const';
+import { socket } from '@/socket';
+import { GlobalContext, globalStore } from '@/stores/GlobalStore';
+
+import OverlayLoader from '@/components/OverlayLoader/OverlayLoader';
+
 import './App.css';
-import GameTable from './components/GameTable/GameTable';
-import OverlayLoader from './components/OverlayLoader/OverlayLoader';
-import { useImagePreloader } from './hooks/useImagePreloader';
-import { ASSET_PATHS } from './const';
-import { UserContext, userStore } from './stores/UserStore/UserStore';
-import Header from './components/Header/Header';
-import { useSocketConnection } from './hooks/useSocketConnection';
-import { socket } from './socket';
 
 function App() {
   const { isLoading } = useImagePreloader(ASSET_PATHS);
   const { isConnected } = useSocketConnection(socket);
+  useUpdateRooms();
 
   return (
-    <UserContext.Provider value={userStore}>
-      {isLoading || !isConnected ? (
-        <OverlayLoader />
-      ) : (
-        <>
-          <Header />
-          <GameTable />
-        </>
-      )}
-    </UserContext.Provider>
+    <GlobalContext.Provider value={globalStore}>
+      {isLoading || !isConnected ? <OverlayLoader /> : <RouterProvider router={routes} />}
+    </GlobalContext.Provider>
   );
 }
 

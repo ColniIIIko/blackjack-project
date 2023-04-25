@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { Card as CardType } from '../../types/cards';
-import Card from '../Card/Card';
-import CardSkeleton from '../CardSkeleton/CardSkeleton';
+import classNames from 'classnames';
+
+import { Card as CardType } from '@/types/cards';
+import Card from '@/components/Card/Card';
+import CardSkeleton from '@/components/CardSkeleton/CardSkeleton';
 
 import styles from './cardHand.module.css';
-import classNames from 'classnames';
 
 type Props = {
   isBusted: boolean;

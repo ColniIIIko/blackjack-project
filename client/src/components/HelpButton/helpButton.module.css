@@ -1,0 +1,10 @@
+.help-btn{
+    cursor: pointer;
+}
+
+.help-ico{
+    user-select: none;
+    height: 1.2rem;
+    width: 1.2rem;
+    filter: invert(44%) sepia(70%) saturate(0%) hue-rotate(167deg) brightness(99%) contrast(97%);
+}

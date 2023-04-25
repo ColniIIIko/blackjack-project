@@ -32,7 +32,14 @@ export interface Dealer {
 export enum GameStatus {
   BETTING = 'betting',
   PLAYING = 'playing',
+  DEALER_PLAY = 'dealer',
   IDLE = 'idle',
 }
+
+export type Room = {
+  id: string;
+  playersCount: number;
+  maxPlayersCount: number;
+};
 
 export type Winner = 'dealer' | 'player' | 'draw';

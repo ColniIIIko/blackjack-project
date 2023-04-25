@@ -1,6 +1,8 @@
 import React from 'react';
-import { PlayerState } from '../../types/state';
-import Player from '../Player/Player';
+
+import { PlayerState } from '@/types/state';
+
+import Player from '@/components/Player/Player';
 
 import styles from './players.module.css';
 

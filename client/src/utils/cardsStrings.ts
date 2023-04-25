@@ -1,4 +1,4 @@
-import { cardSuits, cardValues } from '../const';
+import { cardSuits, cardValues } from '@/const';
 
 export const getCardsString = () => {
   const cards: string[] = [];

@@ -1,7 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { Bet } from '../../types/general';
-import Timer from '../Timer/Timer';
-import { UserContext } from '../../stores/UserStore/UserStore';
+
+import { Bet } from '@/types/general';
+import { GlobalContext } from '@/stores/GlobalStore';
+
+import Timer from '@/components/Timer/Timer';
 
 import styles from './betChoice.module.css';
 
@@ -15,13 +17,15 @@ const BET_OPTIONS: Bet[] = [20, 25, 50, 100, 200];
 const START_TIME = 30;
 
 function BetChoice({ onBet, defaultBet, isTimerOn }: Props) {
-  const { setPreviousBet } = useContext(UserContext)!;
+  const { userStore } = useContext(GlobalContext)!;
+
   const [currentBet, setCurrentBet] = useState<Bet>(defaultBet);
 
   const handleBet = useCallback(() => {
-    setPreviousBet(currentBet);
+    userStore.setPreviousBet(currentBet);
     onBet(currentBet);
-  }, [currentBet, onBet, setPreviousBet]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentBet, onBet]);
 
   return (
     <div className={styles['window']}>
