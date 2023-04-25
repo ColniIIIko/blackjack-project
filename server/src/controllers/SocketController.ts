@@ -124,6 +124,7 @@ export class SocketController {
       socket.removeAllListeners('player-decision');
       socket.removeAllListeners('player-leave');
       socket.removeAllListeners('player-room-leave');
+      socket.removeAllListeners('player-balance-update');
     });
 
     socket.on('disconnect', () => {
@@ -134,6 +135,7 @@ export class SocketController {
       socket.removeAllListeners('player-insurance');
       socket.removeAllListeners('player-decision');
       socket.removeAllListeners('player-leave');
+      socket.removeAllListeners('player-balance-update');
     });
   }
 
