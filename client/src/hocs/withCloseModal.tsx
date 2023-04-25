@@ -1,7 +1,8 @@
 import { createContext, useCallback } from 'react';
 
+import { CLOSE_URL } from '@/const';
+
 import styles from './withCloseModal.module.css';
-import { CLOSE_URL } from '../const';
 
 type withCloseModalProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

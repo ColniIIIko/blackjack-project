@@ -1,8 +1,9 @@
 import React, { useContext, useMemo } from 'react';
 import classNames from 'classnames';
-import { CHIP_URL } from '../../const';
 import { observer } from 'mobx-react-lite';
-import { GlobalContext } from '../../stores/GlobalStore';
+
+import { CHIP_URL } from '@/const';
+import { GlobalContext } from '@/stores/GlobalStore';
 
 import styles from './player.module.css';
 

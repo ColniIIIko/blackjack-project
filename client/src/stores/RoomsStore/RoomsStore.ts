@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { Room } from '../../types/general';
+
+import { Room } from '@/types/general';
 
 class RoomsStore {
   public rooms: Room[] = [];

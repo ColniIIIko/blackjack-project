@@ -1,7 +1,8 @@
 import { useContext, useEffect } from 'react';
-import { GlobalContext } from '../stores/GlobalStore';
-import { Room } from '../types/general';
-import { socket } from '../socket';
+
+import { GlobalContext } from '@/stores/GlobalStore';
+import { Room } from '@/types/general';
+import { socket } from '@/socket';
 
 export const useUpdateRooms = () => {
   const { roomsStore } = useContext(GlobalContext);

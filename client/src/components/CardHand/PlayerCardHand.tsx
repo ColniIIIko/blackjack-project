@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
-import { Card as CardType } from '../../types/cards';
-import Card from '../Card/Card';
-import HandInfo from '../HandInfo/HandInfo';
-import { Bet } from '../../types/general';
 import classNames from 'classnames';
+
+import { Card as CardType } from '@/types/cards';
+import { Bet } from '@/types/general';
+
+import Card from '@/components/Card/Card';
+import HandInfo from '@/components/HandInfo/HandInfo';
 
 import styles from './cardHand.module.css';
 

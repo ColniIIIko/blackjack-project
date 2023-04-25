@@ -1,5 +1,6 @@
 import React from 'react';
-import Timer from '../Timer/Timer';
+
+import Timer from '@/components/Timer/Timer';
 
 import styles from './insuranceOptionChoice.module.css';
 

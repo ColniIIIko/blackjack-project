@@ -1,5 +1,6 @@
 import React from 'react';
-import { useCountDown } from '../../hooks/useCountDown';
+
+import { useCountDown } from '@/hooks/useCountDown';
 
 import styles from './timer.module.css';
 

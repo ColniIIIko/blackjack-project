@@ -1,5 +1,6 @@
 import React from 'react';
-import UserInfo from '../UserInfo/UserInfo';
+
+import UserInfo from '@/components/UserInfo/UserInfo';
 
 import styles from './header.module.css';
 

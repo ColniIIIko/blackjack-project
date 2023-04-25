@@ -1,13 +1,15 @@
 import React, { useContext, useMemo } from 'react';
-import PlayerCardHand from '../CardHand/PlayerCardHand';
-import { PlayerState } from '../../types/state';
-import { getEndGameLabel } from '../../utils/getPlayerEndGameLabel';
-import CardSkeleton from '../CardSkeleton/CardSkeleton';
-import PlayerInfo from './PlayerInfo';
 import classNames from 'classnames';
 
+import { GlobalContext } from '@/stores/GlobalStore';
+import { PlayerState } from '@/types/state';
+import { getEndGameLabel } from '@/utils/getPlayerEndGameLabel';
+
+import PlayerCardHand from '@/components/CardHand/PlayerCardHand';
+import CardSkeleton from '@/components/CardSkeleton/CardSkeleton';
+import PlayerInfo from './PlayerInfo';
+
 import styles from './player.module.css';
-import { GlobalContext } from '../../stores/GlobalStore';
 
 type Props = PlayerState & {
   isEnd: boolean;

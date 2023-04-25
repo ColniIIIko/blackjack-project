@@ -1,7 +1,8 @@
 import { makeAutoObservable } from 'mobx';
-import { Bet, User } from '../../types/general';
 import { v4 as uuid } from 'uuid';
 import { generateUsername } from 'unique-username-generator';
+
+import { Bet, User } from '@/types/general';
 
 class UserStore implements User {
   id: string = uuid();

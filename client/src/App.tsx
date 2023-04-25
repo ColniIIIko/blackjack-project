@@ -1,13 +1,16 @@
-import './App.css';
-import OverlayLoader from './components/OverlayLoader/OverlayLoader';
-import { useImagePreloader } from './hooks/useImagePreloader';
-import { ASSET_PATHS } from './const';
-import { useSocketConnection } from './hooks/useSocketConnection';
 import { RouterProvider } from 'react-router';
-import { socket } from './socket';
-import routes from './routes';
-import { GlobalContext, globalStore } from './stores/GlobalStore';
-import { useUpdateRooms } from './hooks/useUpdateRooms';
+
+import routes from '@/routes';
+import { useImagePreloader } from '@/hooks/useImagePreloader';
+import { useSocketConnection } from '@/hooks/useSocketConnection';
+import { useUpdateRooms } from '@/hooks/useUpdateRooms';
+import { ASSET_PATHS } from '@/const';
+import { socket } from '@/socket';
+import { GlobalContext, globalStore } from '@/stores/GlobalStore';
+
+import OverlayLoader from '@/components/OverlayLoader/OverlayLoader';
+
+import './App.css';
 
 function App() {
   const { isLoading } = useImagePreloader(ASSET_PATHS);

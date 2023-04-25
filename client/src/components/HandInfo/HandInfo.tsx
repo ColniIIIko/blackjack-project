@@ -1,6 +1,7 @@
 import React from 'react';
-import { Bet } from '../../types/general';
-import { CHIP_URL } from '../../const';
+
+import { CHIP_URL } from '@/const';
+import { Bet } from '@/types/general';
 
 import styles from './handInfo.module.css';
 

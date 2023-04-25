@@ -1,7 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { Bet } from '../../types/general';
-import Timer from '../Timer/Timer';
-import { GlobalContext } from '../../stores/GlobalStore';
+
+import { Bet } from '@/types/general';
+import { GlobalContext } from '@/stores/GlobalStore';
+
+import Timer from '@/components/Timer/Timer';
 
 import styles from './betChoice.module.css';
 
@@ -16,6 +18,7 @@ const START_TIME = 30;
 
 function BetChoice({ onBet, defaultBet, isTimerOn }: Props) {
   const { userStore } = useContext(GlobalContext)!;
+
   const [currentBet, setCurrentBet] = useState<Bet>(defaultBet);
 
   const handleBet = useCallback(() => {

@@ -1,7 +1,8 @@
 import { makeAutoObservable } from 'mobx';
+import { createContext } from 'react';
+
 import { userStore } from './UserStore/UserStore';
 import { roomsStore } from './RoomsStore/RoomsStore';
-import { createContext } from 'react';
 
 export class GlobalStore {
   public userStore = userStore;

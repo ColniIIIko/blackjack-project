@@ -1,21 +1,23 @@
 import { observer } from 'mobx-react-lite';
 import { useCallback, useContext, useEffect } from 'react';
-import { useBlackJackState } from '../../hooks/useBlackJackState';
-import { socket } from '../../socket';
-import BetChoice from '../../components/BetChoice/BetChoice';
-import Dealer from '../../components/Dealer/Dealer';
-import InsuranceOptionChoice from '../../components/InsuranceOptionChoice/InsuranceOptionChoice';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import PlayerOptionChoice from '../../components/PlayerOptionChoice/playerOptionChoice';
-import Players from '../../components/Players/Players';
-import { PlayerState } from '../../types/state';
-import StartGameButton from '../../components/StartGameButton/StartGameButton';
-import GameTableHeader from '../../components/GameTableHeader/GameTableHeader';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { useBlackJackState } from '@/hooks/useBlackJackState';
+import { PlayerState } from '@/types/state';
+import { GlobalContext } from '@/stores/GlobalStore';
+import { socket } from '@/socket';
+
+import StartGameButton from '@/components/StartGameButton/StartGameButton';
+import GameTableHeader from '@/components/GameTableHeader/GameTableHeader';
+import BetChoice from '@/components/BetChoice/BetChoice';
+import Dealer from '@/components/Dealer/Dealer';
+import InsuranceOptionChoice from '@/components/InsuranceOptionChoice/InsuranceOptionChoice';
+import ModalWindow from '@/components/ModalWindow/ModalWindow';
+import PlayerOptionChoice from '@/components/PlayerOptionChoice/playerOptionChoice';
+import Players from '@/components/Players/Players';
+import PlayerWin from '@/components/PlayerWin/PlayerWin';
 
 import styles from './gameTable.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import { GlobalContext } from '../../stores/GlobalStore';
-import PlayerWin from '../../components/PlayerWin/PlayerWin';
 
 const GameTable = observer(function () {
   const { userStore } = useContext(GlobalContext)!;

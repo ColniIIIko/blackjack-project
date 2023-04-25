@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { HELP_URL } from '../../const';
+import { HELP_URL } from '@/const';
+
+import Rules from '@/components/Rules/Rules';
+import CloseModalWindow from '@/components/ModalWindow/CloseModalWindow';
 
 import styles from './helpButton.module.css';
-import Rules from '../Rules/Rules';
-import CloseModalWindow from '../ModalWindow/CloseModalWindow';
 
 function HelpButton() {
   const [isOpen, setIsOpen] = useState(false);

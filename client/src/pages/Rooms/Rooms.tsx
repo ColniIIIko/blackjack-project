@@ -1,11 +1,13 @@
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
-import { socket } from '../../socket';
-import Room from '../../components/Room/Room';
-import HelpButton from '../../components/HelpButton/HelpButton';
-import Button from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { GlobalContext } from '../../stores/GlobalStore';
+
+import { socket } from '@/socket';
+import { GlobalContext } from '@/stores/GlobalStore';
+
+import HelpButton from '@/components/HelpButton/HelpButton';
+import Room from '@/components/Room/Room';
+import Button from '@/components/Button/Button';
 
 import styles from './rooms.module.css';
 

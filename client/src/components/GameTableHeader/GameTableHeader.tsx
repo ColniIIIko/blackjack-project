@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { CLOSE_URL } from '@/const';
+
 import styles from './gameTableHeader.module.css';
-import { CLOSE_URL } from '../../const';
 
 type Props = {
   onTableClose: () => void;

@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { CHIP_URL } from '@/const';
+
 import styles from './playerWin.module.css';
-import { CHIP_URL } from '../../const';
 
 type Props = {
   win: number;

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Bet, PlayerChoice, User } from '../types/general';
-import { DealerState, PlayerState } from '../types/state';
 import { Socket } from 'socket.io-client';
-import { ClientToServerEvents, ServerToClientEvents } from '../types/socket';
+
+import { Bet, PlayerChoice, User } from '@/types/general';
+import { DealerState, PlayerState } from '@/types/state';
+import { ClientToServerEvents, ServerToClientEvents } from '@/types/socket';
 
 const INITIAL_DEALER_STATE: DealerState = {
   hand: {
