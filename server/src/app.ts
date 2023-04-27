@@ -12,8 +12,12 @@ export class App {
   public port: number;
 
   constructor(port: number) {
-    this.port = port;
-    this.server = http.createServer();
+    this.port = Number(process.env.PORT) || port;
+    this.server = http.createServer((req, res) => {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('okay');
+    });
+
     this.io = new Server<ClientToServerEvents, ServerToClientEvents>(this.server, {
       cors: {
         origin: '*',
