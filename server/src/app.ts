@@ -16,7 +16,7 @@ export class App {
     this.server = http.createServer();
     this.io = new Server<ClientToServerEvents, ServerToClientEvents>(this.server, {
       cors: {
-        origin: 'http://localhost:5173',
+        origin: '*',
       },
     });
     this.roomsMap = new Map();
