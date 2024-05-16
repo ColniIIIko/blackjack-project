@@ -7,7 +7,7 @@ import styles from './header.module.css';
 function Header() {
   return (
     <header className={styles['header']}>
-      <div className={styles['logo']}></div>
+      <p className={styles['logo']}>EVO</p>
       <UserInfo />
     </header>
   );
